@@ -13,7 +13,7 @@ enum PhotosEndpoint {
     var path: String {
         switch self {
         case .curatedPhotos(let page, let perPage):
-            return "curated/curated?page=\(page ?? 1)&per_page=\(perPage ?? 1)"
+            return "curated?page=\(page ?? 1)&per_page=\(perPage ?? 1)"
         }
         
     }

@@ -8,10 +8,13 @@
 import UIKit
 
 class HomeVC: UIViewController {
+    private let viewModel = HomeVM()
+    
     private let feed: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 0
+//        layout.itemSize = UICollectionViewFlowLayout.automaticSize
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(HomeFeedCell.self, forCellWithReuseIdentifier: "cell")
@@ -20,8 +23,10 @@ class HomeVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         view.addSubview(feed)
         feedSetup()
+        configureViewModel()
     }
     
     private func feedSetup() {
@@ -35,22 +40,31 @@ class HomeVC: UIViewController {
         ])
     }
  
+    func configureViewModel() {
+        viewModel.getPhotos()
+        viewModel.error = { errorMessage in
+            print("Error(HomeVC44): \(errorMessage)")
+//            self.showAlertController(title: "", message: errorMessage)
+        }
+        viewModel.success = {
+            self.feed.reloadData()
+        }
+    }
 
 }
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height/2)
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height - 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        viewModel.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! HomeFeedCell
-        cell.configure(with: "sunflower", with: "ayazayazov")
+        cell.configure(data: viewModel.items[indexPath.item])
         return cell
     }
 }

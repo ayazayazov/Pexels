@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol HomeFeedCellProtocol{
+    var imageName: String { get }
+    var photographerName: String { get }
+}
+
 class HomeFeedCell: UICollectionViewCell {
-    private var cellImage: UIImageView = {
+    private let cellImage: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = false
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -32,10 +37,9 @@ class HomeFeedCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    func configure(with imageName: String, with title: String) {
-        cellImage.image = UIImage(named: imageName)
-        photographerUsername.text = title
+    func configure(data: HomeFeedCellProtocol) {
+        cellImage.loadImage(url: data.imageName)
+        photographerUsername.text = data.photographerName
     }
     
     
@@ -43,10 +47,11 @@ class HomeFeedCell: UICollectionViewCell {
         addSubview(cellImage)
         addSubview(photographerUsername)
         NSLayoutConstraint.activate([
+            
             photographerUsername.topAnchor.constraint(equalTo: topAnchor),
             photographerUsername.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
             photographerUsername.rightAnchor.constraint(equalTo: rightAnchor),
-            
+
             cellImage.topAnchor.constraint(equalTo: photographerUsername.bottomAnchor),
             cellImage.leadingAnchor.constraint(equalTo: leadingAnchor),
             cellImage.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -54,5 +59,7 @@ class HomeFeedCell: UICollectionViewCell {
             
             
         ])
+        photographerUsername.setContentHuggingPriority(.required, for: .vertical)
+        photographerUsername.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 }

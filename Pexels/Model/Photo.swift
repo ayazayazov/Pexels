@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Photo
 struct Photo: Codable {
     let page, perPage: Int?
-    let photos: [PhotoElement]?
+    let photos: [PhotoData]?
     let totalResults: Int?
     let nextPage: String?
 
@@ -23,7 +23,14 @@ struct Photo: Codable {
 }
 
 // MARK: - PhotoElement
-struct PhotoElement: Codable {
+struct PhotoData: Codable, HomeFeedCellProtocol {
+    var imageName: String {
+        src?.portrait ?? ""
+    }
+    var photographerName: String {
+        photographer ?? ""
+    }
+    
     let id, width, height: Int?
     let url: String?
     let photographer: String?
