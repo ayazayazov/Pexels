@@ -13,9 +13,9 @@ class HomeVC: UIViewController {
     private let feed: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 40
+        layout.minimumLineSpacing = 60
 //        layout.itemSize = UICollectionViewFlowLayout.automaticSize
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let cv = UICollectionView(frame: .init(), collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(HomeFeedCell.self, forCellWithReuseIdentifier: "cell")
         return cv

@@ -77,22 +77,22 @@ class HomeFeedCell: UICollectionViewCell {
         return ub
     }()
     
-    private let cellBottomLeftContainer: UIStackView = {
-        let us = UIStackView()
-        us.axis = .horizontal
-        us.spacing = 0
-        us.distribution = .fillEqually
-        us.translatesAutoresizingMaskIntoConstraints = false
-        return us
-    }()
+//    private let cellBottomLeftContainer: UIStackView = {
+//        let us = UIStackView()
+//        us.axis = .horizontal
+//        us.spacing = 0
+//        us.distribution = .fillEqually
+//        us.translatesAutoresizingMaskIntoConstraints = false
+//        return us
+//    }()
     
-    private let cellBottomContainer: UIStackView = {
-        let us = UIStackView()
-        us.axis = .horizontal
-        us.distribution = .fillProportionally
-        us.translatesAutoresizingMaskIntoConstraints = false
-        return us
-    }()
+//    private let cellBottomContainer: UIStackView = {
+//        let us = UIStackView()
+//        us.axis = .horizontal
+//        us.distribution = .fillProportionally
+//        us.translatesAutoresizingMaskIntoConstraints = false
+//        return us
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -113,16 +113,22 @@ class HomeFeedCell: UICollectionViewCell {
         cellTopContainer.addArrangedSubview(photographerUsername)
         cellTopContainer.addArrangedSubview(followButton)
         
-        cellBottomLeftContainer.addArrangedSubview(likeButton)
-        cellBottomLeftContainer.addArrangedSubview(bookmarkButton)
+//        cellBottomLeftContainer.addArrangedSubview(likeButton)
+//        cellBottomLeftContainer.addArrangedSubview(bookmarkButton)
         
         
-        cellBottomContainer.addArrangedSubview(cellBottomLeftContainer)
-        cellBottomContainer.addArrangedSubview(downloadButton)
+//        cellBottomContainer.addArrangedSubview(cellBottomLeftContainer)
+//        cellBottomContainer.addArrangedSubview(downloadButton)
         
         addSubview(cellTopContainer)
         addSubview(cellImage)
-        addSubview(cellBottomContainer)
+        addSubview(likeButton)
+        addSubview(bookmarkButton)
+        addSubview(downloadButton)
+        
+//        addSubview(cellBottomContainer)
+        
+        
         NSLayoutConstraint.activate([
             followButton.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
             
@@ -130,27 +136,21 @@ class HomeFeedCell: UICollectionViewCell {
             cellTopContainer.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
             cellTopContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
             cellTopContainer.heightAnchor.constraint(equalToConstant: 40),
-//            cellTopContainer.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
             
-
             cellImage.topAnchor.constraint(equalTo: cellTopContainer.bottomAnchor),
-            cellImage.leadingAnchor.constraint(equalTo: leadingAnchor),
-            cellImage.trailingAnchor.constraint(equalTo: trailingAnchor),
+            cellImage.leftAnchor.constraint(equalTo: leftAnchor),
+            cellImage.rightAnchor.constraint(equalTo: rightAnchor),
             cellImage.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            cellBottomContainer.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
-            cellBottomContainer.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
-            cellBottomContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
-            cellBottomContainer.heightAnchor.constraint(equalToConstant: 40),
+            likeButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
+            likeButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
+
+            bookmarkButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
+            bookmarkButton.leftAnchor.constraint(equalTo: likeButton.leftAnchor, constant: 60),
             
+            downloadButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
+            downloadButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20)
             
-//            cellBottomLeftContainer.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
-            cellBottomLeftContainer.leftAnchor.constraint(equalTo: cellBottomContainer.leftAnchor, constant: 0),
-//            cellBottomLeftContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
-//            cellBottomLeftContainer.heightAnchor.constraint(equalToConstant: 40),
-            
-//            bookmarkButton.leftAnchor.constraint(equalTo: , constant: <#T##CGFloat#>)
-   
         ])
     }
 }
