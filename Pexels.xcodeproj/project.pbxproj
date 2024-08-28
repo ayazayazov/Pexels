@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		DB0CA9032C7DE7E700BF7A5B /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0CA9022C7DE7E700BF7A5B /* Extension.swift */; };
+		DB1B5FE72C7FCA70009D92BA /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1B5FE62C7FCA70009D92BA /* ProfileVC.swift */; };
+		DB1B5FE92C7FCBCA009D92BA /* FavoritesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1B5FE82C7FCBCA009D92BA /* FavoritesVC.swift */; };
+		DB1B5FEB2C7FCBE4009D92BA /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1B5FEA2C7FCBE4009D92BA /* SearchVC.swift */; };
 		DBA43C382C70EA1F00B39B4C /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA43C372C70EA1F00B39B4C /* HomeVC.swift */; };
 		DBB63FD42C79C7EB0048A31D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DBB63FD32C79C7EB0048A31D /* Alamofire */; };
 		DBB63FD72C79C8010048A31D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = DBB63FD62C79C8010048A31D /* Kingfisher */; };
@@ -22,10 +25,14 @@
 		DBCE25202C5EC5A600B39853 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCE251F2C5EC5A600B39853 /* SceneDelegate.swift */; };
 		DBCE25272C5EC5A900B39853 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBCE25262C5EC5A900B39853 /* Assets.xcassets */; };
 		DBCE252A2C5EC5A900B39853 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = DBCE25292C5EC5A900B39853 /* Base */; };
+		DBFEB0D72C7F8ABD00520087 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFEB0D62C7F8ABD00520087 /* TabBarVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DB0CA9022C7DE7E700BF7A5B /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		DB1B5FE62C7FCA70009D92BA /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		DB1B5FE82C7FCBCA009D92BA /* FavoritesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesVC.swift; sourceTree = "<group>"; };
+		DB1B5FEA2C7FCBE4009D92BA /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		DBA43C372C70EA1F00B39B4C /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		DBB63FDB2C79C88F0048A31D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		DBB63FDD2C79C8BA0048A31D /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
@@ -40,6 +47,7 @@
 		DBCE25262C5EC5A900B39853 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBCE25292C5EC5A900B39853 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DBCE252B2C5EC5A900B39853 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBFEB0D62C7F8ABD00520087 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +69,30 @@
 				DB0CA9022C7DE7E700BF7A5B /* Extension.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		DB1B5FE32C7FCA1D009D92BA /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				DB1B5FEA2C7FCBE4009D92BA /* SearchVC.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		DB1B5FE42C7FCA39009D92BA /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				DB1B5FE82C7FCBCA009D92BA /* FavoritesVC.swift */,
+			);
+			path = Favorites;
+			sourceTree = "<group>";
+		};
+		DB1B5FE52C7FCA49009D92BA /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				DB1B5FE62C7FCA70009D92BA /* ProfileVC.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		DBB63FD82C79C8190048A31D /* Network */ = {
@@ -101,6 +133,10 @@
 		DBB63FE92C79EA6C0048A31D /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				DBFEB0D62C7F8ABD00520087 /* TabBarVC.swift */,
+				DB1B5FE52C7FCA49009D92BA /* Profile */,
+				DB1B5FE42C7FCA39009D92BA /* Favorites */,
+				DB1B5FE32C7FCA1D009D92BA /* Search */,
 				DBB63FEA2C79EA790048A31D /* Home */,
 			);
 			path = Scene;
@@ -114,13 +150,6 @@
 				DBB63FED2C7A337A0048A31D /* HomeFeedCell.swift */,
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		DBB63FEF2C7A43070048A31D /* ReusableView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ReusableView;
 			sourceTree = "<group>";
 		};
 		DBCE25112C5EC5A600B39853 = {
@@ -142,10 +171,9 @@
 		DBCE251C2C5EC5A600B39853 /* Pexels */ = {
 			isa = PBXGroup;
 			children = (
-				DB0CA9012C7DE7DA00BF7A5B /* Helper */,
-				DBB63FEF2C7A43070048A31D /* ReusableView */,
 				DBB63FE92C79EA6C0048A31D /* Scene */,
 				DBB63FE42C79D34E0048A31D /* Model */,
+				DB0CA9012C7DE7DA00BF7A5B /* Helper */,
 				DBB63FD82C79C8190048A31D /* Network */,
 				DBCE251D2C5EC5A600B39853 /* AppDelegate.swift */,
 				DBCE251F2C5EC5A600B39853 /* SceneDelegate.swift */,
@@ -238,12 +266,16 @@
 				DBB63FF12C7A4DCC0048A31D /* HomeVM.swift in Sources */,
 				DBB63FEE2C7A337A0048A31D /* HomeFeedCell.swift in Sources */,
 				DBB63FE12C79CB880048A31D /* PhotosManager.swift in Sources */,
+				DB1B5FE92C7FCBCA009D92BA /* FavoritesVC.swift in Sources */,
 				DB0CA9032C7DE7E700BF7A5B /* Extension.swift in Sources */,
+				DB1B5FEB2C7FCBE4009D92BA /* SearchVC.swift in Sources */,
 				DBB63FDC2C79C88F0048A31D /* NetworkManager.swift in Sources */,
 				DBA43C382C70EA1F00B39B4C /* HomeVC.swift in Sources */,
 				DBB63FDE2C79C8BA0048A31D /* NetworkConstants.swift in Sources */,
+				DB1B5FE72C7FCA70009D92BA /* ProfileVC.swift in Sources */,
 				DBCE251E2C5EC5A600B39853 /* AppDelegate.swift in Sources */,
 				DBCE25202C5EC5A600B39853 /* SceneDelegate.swift in Sources */,
+				DBFEB0D72C7F8ABD00520087 /* TabBarVC.swift in Sources */,
 				DBB63FE32C79CB920048A31D /* PhotosEndpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
