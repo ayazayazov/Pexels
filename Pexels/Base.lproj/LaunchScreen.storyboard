@@ -23,12 +23,20 @@
                                     <constraint firstAttribute="width" constant="100" id="wic-TL-IR5"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pexels" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEI-SV-Lfd">
+                                <rect key="frame" x="125.66666666666669" y="698" width="142" height="60"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="50"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="3wn-YT-qqS" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="1NX-sA-1JQ"/>
+                            <constraint firstItem="DEI-SV-Lfd" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Ony-aG-3Kb"/>
                             <constraint firstItem="3wn-YT-qqS" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ZRS-MZ-hgi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="DEI-SV-Lfd" secondAttribute="bottom" constant="60" id="e6i-ta-whu"/>
                         </constraints>
                     </view>
                 </viewController>
