@@ -10,11 +10,18 @@ import UIKit
 class HomeVC: UIViewController {
     private let viewModel = HomeVM()
     
+    private let segment: UISegmentedControl = {
+        let sc = UISegmentedControl(items: ["Photos", "Videos"])
+        sc.selectedSegmentIndex = 0
+//        sc.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        return sc
+    }()
+    
     private let feed: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 60
-//        layout.itemSize = UICollectionViewFlowLayout.automaticSize
         let cv = UICollectionView(frame: .init(), collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(HomeFeedCell.self, forCellWithReuseIdentifier: "cell")
@@ -25,18 +32,28 @@ class HomeVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(feed)
+        view.addSubview(segment)
+        segmentSetup()
         feedSetup()
         configureViewModel()
+    }
+    
+    private func segmentSetup() {
+        NSLayoutConstraint.activate([
+            segment.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            segment.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+            segment.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10)
+        ])
     }
     
     private func feedSetup() {
         feed.dataSource = self
         feed.delegate = self
         NSLayoutConstraint.activate([
-            feed.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            feed.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            feed.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0),
-            feed.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0)
+            feed.topAnchor.constraint(equalTo: segment.bottomAnchor),
+            feed.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            feed.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            feed.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
         ])
     }
  
