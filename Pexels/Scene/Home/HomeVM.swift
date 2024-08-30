@@ -9,6 +9,9 @@ import Foundation
 
 class HomeVM {
     var items = [PhotoData]()
+    
+    let dataForTab1 = ["Item 1", "Item 2", "Item 3"]
+    
     var success: (() -> Void)?
     var error: ((String) -> Void)?
     

@@ -77,23 +77,6 @@ class HomeFeedCell: UICollectionViewCell {
         return ub
     }()
     
-//    private let cellBottomLeftContainer: UIStackView = {
-//        let us = UIStackView()
-//        us.axis = .horizontal
-//        us.spacing = 0
-//        us.distribution = .fillEqually
-//        us.translatesAutoresizingMaskIntoConstraints = false
-//        return us
-//    }()
-    
-//    private let cellBottomContainer: UIStackView = {
-//        let us = UIStackView()
-//        us.axis = .horizontal
-//        us.distribution = .fillProportionally
-//        us.translatesAutoresizingMaskIntoConstraints = false
-//        return us
-//    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -112,22 +95,12 @@ class HomeFeedCell: UICollectionViewCell {
     private func setupView() {
         cellTopContainer.addArrangedSubview(photographerUsername)
         cellTopContainer.addArrangedSubview(followButton)
-        
-//        cellBottomLeftContainer.addArrangedSubview(likeButton)
-//        cellBottomLeftContainer.addArrangedSubview(bookmarkButton)
-        
-        
-//        cellBottomContainer.addArrangedSubview(cellBottomLeftContainer)
-//        cellBottomContainer.addArrangedSubview(downloadButton)
-        
+
         addSubview(cellTopContainer)
         addSubview(cellImage)
         addSubview(likeButton)
         addSubview(bookmarkButton)
         addSubview(downloadButton)
-        
-//        addSubview(cellBottomContainer)
-        
         
         NSLayoutConstraint.activate([
             followButton.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
