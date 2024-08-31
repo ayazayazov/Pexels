@@ -13,14 +13,6 @@ protocol HomeFeedCellProtocol{
 }
 
 class HomeFeedCell: UICollectionViewCell {
-    private let cellImage: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.clipsToBounds = false
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        return iv
-    }()
-    
     private let photographerUsername: UILabel = {
         let il = UILabel()
         il.font = .systemFont(ofSize: 16, weight: .bold)
@@ -42,12 +34,12 @@ class HomeFeedCell: UICollectionViewCell {
         return ub
     }()
     
-    private let cellTopContainer: UIStackView = {
-        let us = UIStackView()
-        us.axis = .horizontal
-        us.distribution = .fillProportionally
-        us.translatesAutoresizingMaskIntoConstraints = false
-        return us
+    private let cellImage: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = false
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
     }()
     
     private let likeButton: UIButton = {
@@ -91,39 +83,36 @@ class HomeFeedCell: UICollectionViewCell {
         photographerUsername.text = data.photographerName
     }
     
-    
     private func setupView() {
-        cellTopContainer.addArrangedSubview(photographerUsername)
-        cellTopContainer.addArrangedSubview(followButton)
-
-        addSubview(cellTopContainer)
+        addSubview(photographerUsername)
+        addSubview(followButton)
         addSubview(cellImage)
         addSubview(likeButton)
         addSubview(bookmarkButton)
         addSubview(downloadButton)
-        
         NSLayoutConstraint.activate([
-            followButton.widthAnchor.constraint(lessThanOrEqualToConstant: 80),
+            photographerUsername.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            photographerUsername.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
+            photographerUsername.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
             
-            cellTopContainer.topAnchor.constraint(equalTo: topAnchor),
-            cellTopContainer.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
-            cellTopContainer.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
-            cellTopContainer.heightAnchor.constraint(equalToConstant: 40),
+            followButton.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            followButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
+            followButton.heightAnchor.constraint(equalToConstant: 40),
+            followButton.widthAnchor.constraint(equalToConstant: 80),
             
-            cellImage.topAnchor.constraint(equalTo: cellTopContainer.bottomAnchor),
+            cellImage.topAnchor.constraint(equalTo: followButton.bottomAnchor),
             cellImage.leftAnchor.constraint(equalTo: leftAnchor),
             cellImage.rightAnchor.constraint(equalTo: rightAnchor),
             cellImage.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             likeButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
-            likeButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
+            likeButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 28),
 
             bookmarkButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
             bookmarkButton.leftAnchor.constraint(equalTo: likeButton.leftAnchor, constant: 60),
             
             downloadButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
-            downloadButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20)
-            
+            downloadButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -28)
         ])
     }
 }

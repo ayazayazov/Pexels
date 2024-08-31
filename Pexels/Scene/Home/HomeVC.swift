@@ -8,13 +8,14 @@
 import UIKit
 
 class HomeVC: UIViewController, UISearchBarDelegate {
+    var MinusIdealHeightForCell: CGFloat = 0
+    
     private let viewModel = HomeVM()
     
     private let feed: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 60
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.minimumLineSpacing = 52
         let cv = UICollectionView(frame: .init(), collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(HomeFeedCell.self, forCellWithReuseIdentifier: "cell")
@@ -26,11 +27,9 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
-        
         feedSetup()
         configureViewModel()
     }
-    
     
     private func feedSetup() {
         view.addSubview(feed)
@@ -43,8 +42,6 @@ class HomeVC: UIViewController, UISearchBarDelegate {
             feed.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
         ])
     }
-    
-    
     
     func configureViewModel() {
         viewModel.getPhotos()
@@ -61,7 +58,16 @@ class HomeVC: UIViewController, UISearchBarDelegate {
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height - 60)
+        if view.frame.height >= 932 {
+            MinusIdealHeightForCell = 220
+        } else if view.frame.height >= 852 {
+            MinusIdealHeightForCell = 198
+        } else if view.frame.height >= 812 {
+            MinusIdealHeightForCell = 184
+        } else if view.frame.height >= 667 {
+            MinusIdealHeightForCell = 40
+        }
+        return CGSize(width: view.frame.width, height: view.frame.height - MinusIdealHeightForCell)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
