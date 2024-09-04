@@ -23,7 +23,6 @@ class SearchVM {
                 print(errorMessage)
             } else if let data {
                 self.collectionData = data
-                print(data)
                 self.items.append(contentsOf: data.collections ?? [])
                 self.success?()
             }

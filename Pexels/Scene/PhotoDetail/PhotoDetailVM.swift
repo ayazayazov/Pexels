@@ -23,8 +23,6 @@ class PhotoDetailVM {
                 print(errorMessage)
             } else if let data {
                 self.photoData = data
-//                self.photoDetails.append(contentsOf: data ?? [])
-//                print(self.photoDetails)
                 self.success?()
             }
         }

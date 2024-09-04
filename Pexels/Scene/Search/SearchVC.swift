@@ -31,7 +31,7 @@ class SearchVC: UIViewController, UISearchBarDelegate {
     private let feed: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 40
+        layout.minimumLineSpacing = 30
         let cv = UICollectionView(frame: .init(), collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(SearchFeedCell.self, forCellWithReuseIdentifier: "cell")
@@ -97,9 +97,9 @@ extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let controller =  PhotoDetailVC()
-//        //        controller.photoID = viewModel.items[indexPath.item].id
-//        navigationController?.show(controller, sender: nil)
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller =  CollectionDetailVC()
+        controller.collectionID = viewModel.items[indexPath.item].id
+        navigationController?.show(controller, sender: nil)
+    }
 }
