@@ -14,6 +14,7 @@ class TabBarVC: UITabBarController {
         tabBar.barTintColor = .white
         tabBar.tintColor = .black
         tabBar.unselectedItemTintColor = .systemGray
+        tabBar.isTranslucent = false
         
         let homeVC = HomeVC()
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
