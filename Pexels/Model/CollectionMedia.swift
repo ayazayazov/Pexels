@@ -26,7 +26,15 @@ struct CollectionMedia: Codable {
 }
 
 // MARK: - Media
-struct Media: Codable {
+struct Media: Codable, CollectionDetailCellProtocol {
+    var imageName: String {
+        mediaSrc?.portrait ?? ""
+    }
+    
+    var photographerName: String {
+        photographer ?? ""
+    }
+    
     let type: String?
     let id, width, height: Int?
     let url: String?

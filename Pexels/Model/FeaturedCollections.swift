@@ -28,9 +28,18 @@ struct Collection: Codable, SearchFeedCellProtocol {
     var collectionTitle: String {
         title ?? ""
     }
-    var mediaLabel: Int {
+    var mediaCountLabel: Int {
         mediaCount ?? 0
     }
+    var photosCountLabel: Int {
+        photosCount ?? 0
+    }
+    
+    var videosCountLabel: Int {
+        videosCount ?? 0
+    }
+    
+    
     
     let id, title, description: String?
     let collectionPrivate: Bool?

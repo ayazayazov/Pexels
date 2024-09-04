@@ -8,7 +8,7 @@
 import Foundation
 
 class CollectionDetailVM {
-    var collectionDetails = [Media]()
+    var items = [Media]()
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?
@@ -24,6 +24,7 @@ class CollectionDetailVM {
             } else if let data {
                 self.collectionData = data
                 print(data)
+                self.items.append(contentsOf: data.media ?? [])
                 self.success?()
             }
         }
