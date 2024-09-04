@@ -22,6 +22,8 @@
 		DBB63FE62C79D35B0048A31D /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB63FE52C79D35B0048A31D /* Photo.swift */; };
 		DBB63FEE2C7A337A0048A31D /* HomeFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB63FED2C7A337A0048A31D /* HomeFeedCell.swift */; };
 		DBB63FF12C7A4DCC0048A31D /* HomeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB63FF02C7A4DCC0048A31D /* HomeVM.swift */; };
+		DBBAEE672C84EF4000F9FA7E /* PhotoDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBAEE662C84EF4000F9FA7E /* PhotoDetailVC.swift */; };
+		DBBAEE692C859CAE00F9FA7E /* PhotoDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBAEE682C859CAE00F9FA7E /* PhotoDetailVM.swift */; };
 		DBCE251E2C5EC5A600B39853 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCE251D2C5EC5A600B39853 /* AppDelegate.swift */; };
 		DBCE25202C5EC5A600B39853 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCE251F2C5EC5A600B39853 /* SceneDelegate.swift */; };
 		DBCE25272C5EC5A900B39853 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBCE25262C5EC5A900B39853 /* Assets.xcassets */; };
@@ -43,6 +45,8 @@
 		DBB63FE52C79D35B0048A31D /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		DBB63FED2C7A337A0048A31D /* HomeFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedCell.swift; sourceTree = "<group>"; };
 		DBB63FF02C7A4DCC0048A31D /* HomeVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVM.swift; sourceTree = "<group>"; };
+		DBBAEE662C84EF4000F9FA7E /* PhotoDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailVC.swift; sourceTree = "<group>"; };
+		DBBAEE682C859CAE00F9FA7E /* PhotoDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailVM.swift; sourceTree = "<group>"; };
 		DBCE251A2C5EC5A600B39853 /* Pexels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pexels.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBCE251D2C5EC5A600B39853 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBCE251F2C5EC5A600B39853 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,6 +101,15 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		DB25407F2C836BEF00A02B62 /* PhotoDetail */ = {
+			isa = PBXGroup;
+			children = (
+				DBBAEE662C84EF4000F9FA7E /* PhotoDetailVC.swift */,
+				DBBAEE682C859CAE00F9FA7E /* PhotoDetailVM.swift */,
+			);
+			path = PhotoDetail;
+			sourceTree = "<group>";
+		};
 		DBB63FD82C79C8190048A31D /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +153,7 @@
 				DB1B5FE42C7FCA39009D92BA /* Favorites */,
 				DB1B5FE32C7FCA1D009D92BA /* Search */,
 				DBB63FEA2C79EA790048A31D /* Home */,
+				DB25407F2C836BEF00A02B62 /* PhotoDetail */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -269,6 +283,7 @@
 				DBB63FF12C7A4DCC0048A31D /* HomeVM.swift in Sources */,
 				DBB63FEE2C7A337A0048A31D /* HomeFeedCell.swift in Sources */,
 				DBB63FE12C79CB880048A31D /* PhotosManager.swift in Sources */,
+				DBBAEE672C84EF4000F9FA7E /* PhotoDetailVC.swift in Sources */,
 				DB1B5FE92C7FCBCA009D92BA /* FavoritesVC.swift in Sources */,
 				DB1B5FED2C80CCF2009D92BA /* HomeFeedHeader.swift in Sources */,
 				DB0CA9032C7DE7E700BF7A5B /* Extension.swift in Sources */,
@@ -278,6 +293,7 @@
 				DBB63FDE2C79C8BA0048A31D /* NetworkConstants.swift in Sources */,
 				DB1B5FE72C7FCA70009D92BA /* ProfileVC.swift in Sources */,
 				DBCE251E2C5EC5A600B39853 /* AppDelegate.swift in Sources */,
+				DBBAEE692C859CAE00F9FA7E /* PhotoDetailVM.swift in Sources */,
 				DBCE25202C5EC5A600B39853 /* SceneDelegate.swift in Sources */,
 				DBFEB0D72C7F8ABD00520087 /* TabBarVC.swift in Sources */,
 				DBB63FE32C79CB920048A31D /* PhotosEndpoint.swift in Sources */,
