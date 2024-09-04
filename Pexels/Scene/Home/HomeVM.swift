@@ -9,8 +9,6 @@ import Foundation
 
 class HomeVM {
     var items = [PhotoData]()
-
-    let dataForTab1 = ["Item 1", "Item 2", "Item 3"]
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?
@@ -18,7 +16,7 @@ class HomeVM {
     var photoData: Photo?
     let photosManager = PhotosManager()
     
-    func getPhotos() {
+    func getCuratedPhotos() {
         photosManager.getCuratedPhotos(page: 1, perPage: 10) { data, errorMessage in
             if let errorMessage {
                 self.error?(errorMessage)
