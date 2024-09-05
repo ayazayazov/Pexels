@@ -10,6 +10,7 @@ import UIKit
 class CollectionDetailVC: UIViewController {
     
     private let viewModel = CollectionDetailVM()
+    private let imageRation = ImageRationCalc()
     private let refreshControl = UIRefreshControl()
     
     let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
@@ -68,6 +69,7 @@ class CollectionDetailVC: UIViewController {
 //            self.refreshControl.endRefreshing()
         }
         viewModel.success = {
+            print(collectionID)
 //            self.refreshControl.endRefreshing()
             self.feed.reloadData()
         }
@@ -84,19 +86,9 @@ class CollectionDetailVC: UIViewController {
 
 extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if view.frame.height >= 932 {
-//            MinusIdealHeightForCell = 220
-//        } else if view.frame.height >= 852 {
-//            MinusIdealHeightForCell = 198
-//        } else if view.frame.height >= 812 {
-//            MinusIdealHeightForCell = 184
-//        } else if view.frame.height >= 667 {
-//            MinusIdealHeightForCell = 40
-//        }
-//        return CGSize(width: view.frame.width, height: view.frame.height - MinusIdealHeightForCell)
-        
-//        height 638px for iphone 15
-        return CGSize(width: view.frame.width, height: 656)
+       let width = viewModel.items[indexPath.item].width
+        let height = viewModel.items[indexPath.item].height
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

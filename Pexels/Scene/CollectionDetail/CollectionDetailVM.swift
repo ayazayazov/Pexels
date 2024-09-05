@@ -23,7 +23,6 @@ class CollectionDetailVM {
                 print(errorMessage)
             } else if let data {
                 self.collectionData = data
-                print(data)
                 self.items.append(contentsOf: data.media ?? [])
                 self.success?()
             }

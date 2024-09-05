@@ -22,7 +22,6 @@ class PhotoDetailVM {
                 self.error?(errorMessage)
                 print(errorMessage)
             } else if let data {
-                print(data)
                 self.photoData = data
                 self.success?()
             }
