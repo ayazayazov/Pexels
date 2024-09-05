@@ -25,13 +25,13 @@ struct Photo: Codable {
 // MARK: - PhotoElement
 struct PhotoData: Codable, HomeFeedCellProtocol {
     var imageName: String {
-        src?.portrait ?? ""
+        src?.large2X ?? ""
     }
     var photographerName: String {
         photographer ?? ""
     }
     
-    let id, width, height: Int?
+    let id, width, height: Int
     let url: String?
     let photographer: String?
     let photographerURL: String?
