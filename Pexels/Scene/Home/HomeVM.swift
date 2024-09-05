@@ -17,7 +17,7 @@ class HomeVM {
     let photosManager = PhotosManager()
     
     func getCuratedPhotos() {
-        photosManager.getCuratedPhotos(page: 1, perPage: 10) { data, errorMessage in
+        photosManager.getCuratedPhotos(page: (photoData?.page ?? 0) + 1, perPage: 10) { data, errorMessage in
             if let errorMessage {
                 self.error?(errorMessage)
             } else if let data {
@@ -26,5 +26,19 @@ class HomeVM {
                 self.success?()
             }
         }
+    }
+    
+    func pagination(index: Int) {
+        let currentPage = photoData?.page ?? 1
+        let totalPages = (photoData?.totalResults ?? 0) / (photoData?.perPage ?? 0)
+        if index == items.count-2 && currentPage <= totalPages {
+            getCuratedPhotos()
+        }
+    }
+    
+    func reset() {
+        photoData = nil
+        items.removeAll()
+        getCuratedPhotos()
     }
 }

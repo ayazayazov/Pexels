@@ -8,10 +8,9 @@
 import UIKit
 
 class HomeVC: UIViewController, UISearchBarDelegate {
-    var MinusIdealHeightForCell: CGFloat = 0
-    
     private let viewModel = HomeVM()
-    
+    private let imageRation = ImageRationCalc()
+    private let refreshControl = UIRefreshControl()
     
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -24,7 +23,7 @@ class HomeVC: UIViewController, UISearchBarDelegate {
     private let segment: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Photos", "Videos"])
         sc.selectedSegmentIndex = 0
-        //        sc.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+//        sc.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
         sc.translatesAutoresizingMaskIntoConstraints = false
         return sc
     }()
@@ -33,7 +32,8 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 52
-        let cv = UICollectionView(frame: .init(), collectionViewLayout: layout)
+//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(HomeFeedCell.self, forCellWithReuseIdentifier: "cell")
 //        cv.register(HomeFeedHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeFeedHeader.identifier)
@@ -45,8 +45,7 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
         
-        headerSetup()
-        feedSetup()
+        configureUI()
         configureViewModel()
     }
     
@@ -85,34 +84,41 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         ])
     }
     
+    func configureUI() {
+        headerSetup()
+        feedSetup()
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        feed.refreshControl = refreshControl
+    }
+    
     func configureViewModel() {
         viewModel.getCuratedPhotos()
         viewModel.error = { errorMessage in
             print("Error(HomeVC44): \(errorMessage)")
             //            self.showAlertController(title: "", message: errorMessage)
+            self.refreshControl.endRefreshing()
         }
         viewModel.success = {
+            self.refreshControl.endRefreshing()
             self.feed.reloadData()
         }
+    }
+    
+    @objc func pullToRefresh() {
+        viewModel.reset()
+    }
+    
+    func segmentChanged() {
+        
     }
     
 }
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if view.frame.height >= 932 {
-//            MinusIdealHeightForCell = 220
-//        } else if view.frame.height >= 852 {
-//            MinusIdealHeightForCell = 198
-//        } else if view.frame.height >= 812 {
-//            MinusIdealHeightForCell = 184
-//        } else if view.frame.height >= 667 {
-//            MinusIdealHeightForCell = 40
-//        }
-//        return CGSize(width: view.frame.width, height: view.frame.height - MinusIdealHeightForCell)
-        
-//        height 638px for iphone 15
-        return CGSize(width: view.frame.width, height: 656)
+        let width = viewModel.items[indexPath.item].width
+        let height = viewModel.items[indexPath.item].height
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -129,6 +135,10 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let controller =  PhotoDetailVC()
         controller.photoID = viewModel.items[indexPath.item].id
         navigationController?.show(controller, sender: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel.pagination(index: indexPath.item)
     }
     
 //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

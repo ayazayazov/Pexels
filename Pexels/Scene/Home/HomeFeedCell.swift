@@ -36,7 +36,7 @@ class HomeFeedCell: UICollectionViewCell {
     
     private let cellImage: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = false
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
@@ -100,18 +100,18 @@ class HomeFeedCell: UICollectionViewCell {
             followButton.heightAnchor.constraint(equalToConstant: 40),
             followButton.widthAnchor.constraint(equalToConstant: 80),
             
-            cellImage.topAnchor.constraint(equalTo: followButton.bottomAnchor),
+            cellImage.topAnchor.constraint(equalTo: followButton.bottomAnchor, constant: 8),
             cellImage.leftAnchor.constraint(equalTo: leftAnchor),
             cellImage.rightAnchor.constraint(equalTo: rightAnchor),
             cellImage.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            likeButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
+            likeButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 8),
             likeButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 28),
 
-            bookmarkButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
+            bookmarkButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 8),
             bookmarkButton.leftAnchor.constraint(equalTo: likeButton.leftAnchor, constant: 60),
             
-            downloadButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor),
+            downloadButton.topAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: 8),
             downloadButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -28)
         ])
     }
