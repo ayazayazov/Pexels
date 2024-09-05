@@ -10,6 +10,7 @@ import UIKit
 class SearchVC: UIViewController, UISearchBarDelegate {
     
     private let viewModel = SearchVM()
+    private let refreshControl = UIRefreshControl()
     
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -40,7 +41,7 @@ class SearchVC: UIViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewSetup()
+        configureUI()
         configureViewModel()
     }
     
@@ -50,7 +51,10 @@ class SearchVC: UIViewController, UISearchBarDelegate {
         self.tabBarController?.tabBar.isTranslucent = false
     }
     
-    private func viewSetup() {
+    private func configureUI() {
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        feed.refreshControl = refreshControl
+        
         searchBar.delegate = self
         view.addSubview(searchBar)
         view.addSubview(feedLabel)
@@ -79,10 +83,16 @@ class SearchVC: UIViewController, UISearchBarDelegate {
         viewModel.error = { errorMessage in
             print("Error(HomeVC44): \(errorMessage)")
             //            self.showAlertController(title: "", message: errorMessage)
+            self.refreshControl.endRefreshing()
         }
         viewModel.success = {
+            self.refreshControl.endRefreshing()
             self.feed.reloadData()
         }
+    }
+    
+    @objc func pullToRefresh() {
+        viewModel.reset()
     }
 }
 
@@ -108,5 +118,9 @@ extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         controller.collectionID = viewModel.items[indexPath.item].id
         controller.collectionTitle = viewModel.items[indexPath.item].title
         navigationController?.show(controller, sender: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel.pagination(index: indexPath.item)
     }
 }
