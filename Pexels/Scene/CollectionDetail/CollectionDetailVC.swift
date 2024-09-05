@@ -10,6 +10,7 @@ import UIKit
 class CollectionDetailVC: UIViewController {
     
     private let viewModel = CollectionDetailVM()
+    private let refreshControl = UIRefreshControl()
     
     let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
     
@@ -35,8 +36,8 @@ class CollectionDetailVC: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         print(collectionID ?? "empty")
-        configureViewModel(page: 1, perPage: 5, collectionID: collectionID ?? "0ds0rcv")
-        setupView()
+        configureViewModel(collectionID: collectionID ?? "")
+        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,18 +45,10 @@ class CollectionDetailVC: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
     
-    func configureViewModel(page: Int?, perPage: Int?, collectionID: String) {
-        viewModel.getCollectionMedia(page: page, perPage: perPage, collectionID: collectionID)
-        viewModel.error = { errorMessage in
-            print("Error(HomeVC44): \(errorMessage)")
-            //            self.showAlertController(title: "", message: errorMessage)
-        }
-        viewModel.success = {
-            self.feed.reloadData()
-        }
-    }
-    
-    private func setupView() {
+    private func configureUI() {
+//        refreshControl.addTarget(self, action: #selector(pullToRefresh(collectionID: collectionID ?? "")), for: .valueChanged)
+//        feed.refreshControl = refreshControl
+        
         view.addSubview(feed)
         feed.dataSource = self
         feed.delegate = self
@@ -66,6 +59,25 @@ class CollectionDetailVC: UIViewController {
             feed.rightAnchor.constraint(equalTo: view.rightAnchor)
         ])
     }
+    
+    func configureViewModel(collectionID: String) {
+        viewModel.getCollectionMedia(collectionID: collectionID)
+        viewModel.error = { errorMessage in
+            print("Error(HomeVC44): \(errorMessage)")
+            //            self.showAlertController(title: "", message: errorMessage)
+//            self.refreshControl.endRefreshing()
+        }
+        viewModel.success = {
+//            self.refreshControl.endRefreshing()
+            self.feed.reloadData()
+        }
+    }
+    
+//    @objc func pullToRefresh(collectionID: String) {
+//        viewModel.reset(collectionID: collectionID)
+//    }
+    
+    
 
 }
 
@@ -101,6 +113,10 @@ extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSour
         let controller =  PhotoDetailVC()
         controller.photoID = viewModel.items[indexPath.item].id
         navigationController?.show(controller, sender: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel.pagination(index: indexPath.item, collectionID: collectionID ?? "")
     }
     
 //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

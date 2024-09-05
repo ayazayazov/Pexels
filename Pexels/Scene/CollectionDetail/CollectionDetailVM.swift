@@ -16,8 +16,8 @@ class CollectionDetailVM {
     var collectionData: CollectionMedia?
     let collectionsManager = CollectionsManager()
     
-    func getCollectionMedia(page: Int?, perPage: Int?, collectionID: String) {
-        collectionsManager.getCollectionMedia(page: page, perPage: perPage, collectionID: collectionID) { data, errorMessage in
+    func getCollectionMedia(collectionID: String) {
+        collectionsManager.getCollectionMedia(page: (collectionData?.page ?? 0) + 1, perPage: 10, collectionID: collectionID) { data, errorMessage in
             if let errorMessage {
                 self.error?(errorMessage)
                 print(errorMessage)
@@ -29,4 +29,18 @@ class CollectionDetailVM {
             }
         }
     }
+    
+    func pagination(index: Int, collectionID: String) {
+        let currentPage = collectionData?.page ?? 1
+        let totalPages = (collectionData?.totalResults ?? 0) / (collectionData?.perPage ?? 0)
+        if index == items.count-2 && currentPage <= totalPages {
+            getCollectionMedia(collectionID: collectionID)
+        }
+    }
+    
+//    func reset(collectionID: String) {
+//        collectionData = nil
+//        items.removeAll()
+//        getCollectionMedia(collectionID: collectionID)
+//    }
 }
