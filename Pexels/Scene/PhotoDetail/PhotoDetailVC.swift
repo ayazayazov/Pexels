@@ -103,10 +103,10 @@ class PhotoDetailVC: UIViewController {
             cellImage.leftAnchor.constraint(equalTo: scrollStackViewContainer.leftAnchor),
             cellImage.heightAnchor.constraint(equalToConstant: 600),
             
-            photoDesc.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 10),
+            photoDesc.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
             photoDesc.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
     
-            photoResolutionDesc.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            photoResolutionDesc.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
             photoResolutionDesc.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
         ])
     }

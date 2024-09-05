@@ -28,7 +28,7 @@ struct CollectionMedia: Codable {
 // MARK: - Media
 struct Media: Codable, CollectionDetailCellProtocol {
     var imageName: String {
-        mediaSrc?.portrait ?? ""
+        src?.portrait ?? ""
     }
     
     var photographerName: String {
@@ -42,7 +42,7 @@ struct Media: Codable, CollectionDetailCellProtocol {
     let photographerURL: String?
     let photographerID: Int?
     let avgColor: String?
-    let mediaSrc: MediaSrc?
+    let src: MediaSrc?
     let liked: Bool?
     let alt: String?
 
@@ -51,7 +51,7 @@ struct Media: Codable, CollectionDetailCellProtocol {
         case photographerURL = "photographer_url"
         case photographerID = "photographer_id"
         case avgColor = "avg_color"
-        case mediaSrc, liked, alt
+        case src, liked, alt
     }
 }
 
