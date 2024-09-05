@@ -14,9 +14,9 @@ enum CollectionsEndpoint {
     var path: String {
         switch self {
         case .featuredCollections(let page, let perPage):
-            return "collections/featured?page=\(page ?? 1)&per_page=\(perPage ?? 1)"
+            return "v1/collections/featured?page=\(page ?? 1)&per_page=\(perPage ?? 1)"
         case .collectionMedia(let page, let perPage, let collectionID):
-            return "collections/\(collectionID)?page=\(page ?? 1)&per_page=\(perPage ?? 1)"
+            return "v1/collections/\(collectionID)?page=\(page ?? 1)&per_page=\(perPage ?? 1)"
         }
     }
 }
