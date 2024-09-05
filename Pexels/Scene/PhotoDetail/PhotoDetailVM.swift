@@ -8,7 +8,7 @@
 import Foundation
 
 class PhotoDetailVM {
-    var photoDetails = [PhotoData]()
+    var items = [PhotoData]()
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?

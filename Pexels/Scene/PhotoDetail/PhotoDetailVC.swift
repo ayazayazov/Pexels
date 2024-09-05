@@ -8,9 +8,11 @@
 import UIKit
 
 class PhotoDetailVC: UIViewController {
+    
     private let viewModel = PhotoDetailVM()
+    private let imageRation = ImageRationCalc()
     var photoID: Int?
-
+    
     private let cellImage: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
@@ -70,10 +72,10 @@ class PhotoDetailVC: UIViewController {
             print("Error(HomeVC44): \(errorMessage)")
             //            self.showAlertController(title: "", message: errorMessage)
         }
-        viewModel.success = {
-            self.title = "\(self.viewModel.photoData?.photographer ?? "empty")"
+        viewModel.success = { [self] in
+            self.title = "\(self.viewModel.photoData?.photographerName ?? "empty")"
             self.cellImage.loadImage(url: self.viewModel.photoData?.imageName ?? "")
-            self.photoDesc.text = "\(self.viewModel.photoData?.alt ?? "empty")"
+            self.photoDesc.text = "\(self.viewModel.photoData?.alt ?? "")"
             self.photoResolutionDesc.text = "Resolution: \(self.viewModel.photoData?.width ?? 0000)x\(self.viewModel.photoData?.height ?? 0000)"
         }
     }
@@ -101,7 +103,9 @@ class PhotoDetailVC: UIViewController {
             cellImage.topAnchor.constraint(equalTo: scrollStackViewContainer.topAnchor),
             cellImage.rightAnchor.constraint(equalTo: scrollStackViewContainer.rightAnchor),
             cellImage.leftAnchor.constraint(equalTo: scrollStackViewContainer.leftAnchor),
-            cellImage.heightAnchor.constraint(equalToConstant: 600),
+//            cellImage.heightAnchor.constraint(equalToConstant: CGFloat(scrollStackWidth * imageRation.calc(width: width ?? 0, height: height ?? 0))),
+            
+            cellImage.heightAnchor.constraint(equalToConstant: 500),
             
             photoDesc.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
             photoDesc.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10),
