@@ -9,7 +9,9 @@ import UIKit
 
 protocol SearchFeedCellProtocol{
     var collectionTitle: String { get }
-    var mediaLabel: Int { get }
+    var mediaCountLabel: Int { get }
+    var photosCountLabel: Int {get}
+    var videosCountLabel: Int {get}
 }
 
 class SearchFeedCell: UICollectionViewCell {
@@ -42,7 +44,7 @@ class SearchFeedCell: UICollectionViewCell {
     
     func configure(data: SearchFeedCellProtocol) {
         collectionTitle.text = data.collectionTitle
-        mediaLabel.text = "\(data.mediaLabel) Photos & Videos"
+        mediaLabel.text = "\(data.photosCountLabel) Photos & \(data.videosCountLabel) Videos | \(data.mediaCountLabel)"
     }
     
     private func setupView() {

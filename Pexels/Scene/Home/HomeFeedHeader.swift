@@ -27,28 +27,23 @@ class HomeFeedHeader: UICollectionReusableView, UISearchBarDelegate {
     }()
     
     public func configure() {
-        searchBarSetup()
-        segmentSetup()
+        headerSetup()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
     }
     
-    private func searchBarSetup() {
+    private func headerSetup() {
         searchBar.delegate = self
         addSubview(searchBar)
+        addSubview(segment)
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: topAnchor),
             searchBar.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
             searchBar.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
-            searchBar.heightAnchor.constraint(equalToConstant: 40)
-        ])
-    }
-    
-    private func segmentSetup() {
-        addSubview(segment)
-        NSLayoutConstraint.activate([
+            searchBar.heightAnchor.constraint(equalToConstant: 40),
+            
             segment.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 8),
             segment.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
             segment.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),

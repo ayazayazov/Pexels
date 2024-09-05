@@ -29,9 +29,6 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         return sc
     }()
     
-    
-    
-    
     private let feed: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical

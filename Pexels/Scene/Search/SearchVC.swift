@@ -44,6 +44,12 @@ class SearchVC: UIViewController, UISearchBarDelegate {
         configureViewModel()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isTranslucent = false
+    }
+    
     private func viewSetup() {
         searchBar.delegate = self
         view.addSubview(searchBar)
@@ -100,6 +106,7 @@ extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller =  CollectionDetailVC()
         controller.collectionID = viewModel.items[indexPath.item].id
+        controller.collectionTitle = viewModel.items[indexPath.item].title
         navigationController?.show(controller, sender: nil)
     }
 }
