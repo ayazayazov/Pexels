@@ -17,20 +17,24 @@ class TabBarVC: UITabBarController {
         tabBar.isTranslucent = false
         
         let homeVC = HomeVC()
+        let homeNav = UINavigationController(rootViewController: homeVC)
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         
         let searchVC = SearchVC()
+        let searchNav = UINavigationController(rootViewController: searchVC)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 1)
         
         let favoritesVC = FavoritesVC()
+        let favoritesNav = UINavigationController(rootViewController: favoritesVC)
         favoritesVC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "books.vertical.fill"), tag: 2)
         
         let profileVC = ProfileVC()
+        let profileNav = UINavigationController(rootViewController: profileVC)
         profileVC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "play.rectangle.on.rectangle"), tag: 3)
         
-        let tabBarList = [homeVC, searchVC, favoritesVC, profileVC]
+        viewControllers = [homeNav, searchNav, favoritesNav, profileNav]
         
-        viewControllers = tabBarList.map { UINavigationController(rootViewController: $0) }
+        
         
     }
 

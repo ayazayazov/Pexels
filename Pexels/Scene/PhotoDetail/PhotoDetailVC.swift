@@ -57,9 +57,6 @@ class PhotoDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        self.tabBarController?.tabBar.isHidden = true
-        self.tabBarController?.tabBar.isTranslucent = true
-        self.navigationController?.isNavigationBarHidden = false
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         configureViewModel(id: photoID)
@@ -103,8 +100,6 @@ class PhotoDetailVC: UIViewController {
             cellImage.topAnchor.constraint(equalTo: scrollStackViewContainer.topAnchor),
             cellImage.rightAnchor.constraint(equalTo: scrollStackViewContainer.rightAnchor),
             cellImage.leftAnchor.constraint(equalTo: scrollStackViewContainer.leftAnchor),
-//            cellImage.heightAnchor.constraint(equalToConstant: CGFloat(scrollStackWidth * imageRation.calc(width: width ?? 0, height: height ?? 0))),
-            
             cellImage.heightAnchor.constraint(equalToConstant: 500),
             
             photoDesc.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
