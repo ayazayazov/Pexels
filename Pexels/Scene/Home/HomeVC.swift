@@ -43,7 +43,6 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 52
-//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(HomeFeedCell.self, forCellWithReuseIdentifier: "cell")
@@ -125,29 +124,30 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         viewModel.errorVIDEO = { errorMessage in
             print("Error(HomeVC44): \(errorMessage)")
             //            self.showAlertController(title: "", message: errorMessage)
+            self.refreshControl.endRefreshing()
         }
         viewModel.successVIDEO = {
+            self.refreshControl.endRefreshing()
+            self.feed.reloadData()
         }
     }
     
     @objc func pullToRefresh() {
-        viewModel.reset()
+        if extensionSegmentIndex == 0 {
+            viewModel.reset()
+        } else {
+            viewModel.videoReset()
+        }
     }
     
     @objc func segmentChanged() {
             switch segment.selectedSegmentIndex {
             case 0:
-//                currentData: [PhotoData] = []
                 extensionSegmentIndex = 0
-                currentData = viewModel.items
-                print("SEGMENT INDEX 0 CURRENT DATA", currentData)
             case 1:
-//                currentData: [VideoElement] = []
                 extensionSegmentIndex = 1
-                currentData = viewModel.videoItems
-                print("SEGMENT INDEX 1 CURRENT DATA", currentData)
             default:
-                currentData = [viewModel.items]
+                extensionSegmentIndex = 0
             }
             feed.reloadData()
         }
@@ -166,30 +166,21 @@ class HomeVC: UIViewController, UISearchBarDelegate {
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = viewModel.items[indexPath.item].width
-//        let height = viewModel.items[indexPath.item].height
-//        return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
         if extensionSegmentIndex == 0 {
             let width = viewModel.items[indexPath.item].width
             let height = viewModel.items[indexPath.item].height
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
         } else {
-//            let width = viewModel.videoItems[indexPath.item].videoPictures
-            return CGSize(width: collectionView.frame.width, height: 790)
-            
+            return CGSize(width: collectionView.frame.width, height: 800)
         }
-        
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        viewModel.items.count
         if extensionSegmentIndex == 0 {
             viewModel.items.count
         } else {
-            currentData.count
+            viewModel.videoItems.count
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -198,9 +189,8 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         if extensionSegmentIndex == 0 {
             cell.configure(data: viewModel.items[indexPath.item])
         } else {
-            cell.configure(data: currentData[indexPath.item] as! HomeFeedCellProtocol)
+            cell.configure(data: viewModel.videoItems[indexPath.item])
         }
-//        cell.configure(data: currentData[indexPath.item])
         return cell
     }
     
@@ -212,14 +202,18 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         } else {
             let videoURL = viewModel.videoItems[indexPath.item].videoFiles?[2].link ?? ""
             startVideo(videoURL: videoURL)
-            print(videoURL)
         }
         
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        viewModel.pagination(index: indexPath.item)
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if extensionSegmentIndex == 0 {
+            viewModel.pagination(index: indexPath.item)
+        } else {
+            viewModel.videoPagination(index: indexPath.item)
+        }
+        
+    }
 
 }
 

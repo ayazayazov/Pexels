@@ -57,7 +57,7 @@ class HomeVM {
     let videosManager = VideosManager()
     
     func getPopularVideos() {
-        videosManager.getPopularVideos(page: 1, perPage: 10) { data, errorMessage in
+        videosManager.getPopularVideos(page: (videoData?.page ?? 0) + 1, perPage: 10) { data, errorMessage in
             if let errorMessage {
                 self.errorVIDEO?(errorMessage)
             } else if let data {
@@ -69,5 +69,19 @@ class HomeVM {
                 self.successVIDEO?()
             }
         }
+    }
+    
+    func videoPagination(index: Int) {
+        let currentPage = videoData?.page ?? 1
+        let totalPages = (videoData?.totalResults ?? 0) / (videoData?.perPage ?? 0)
+        if index == videoItems.count-2 && currentPage <= totalPages {
+            getPopularVideos()
+        }
+    }
+    
+    func videoReset() {
+        videoData = nil
+        videoItems.removeAll()
+        getPopularVideos()
     }
 }
