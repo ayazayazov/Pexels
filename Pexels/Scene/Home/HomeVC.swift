@@ -187,11 +187,14 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let controller =  PhotoDetailVC()
-//        controller.photoID = viewModel.items[indexPath.item].id
-//        navigationController?.show(controller, sender: nil)
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if extensionSegmentIndex == 0 {
+            let controller =  PhotoDetailVC()
+            controller.photoID = viewModel.items[indexPath.item].id
+            navigationController?.show(controller, sender: nil)
+        }
+        
+    }
     
 //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        viewModel.pagination(index: indexPath.item)
