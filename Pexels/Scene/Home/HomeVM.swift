@@ -8,10 +8,13 @@
 import Foundation
 
 class HomeVM {
+    // MARK: - PHOTO
+    
     var items = [PhotoData]()
     
     var success: (() -> Void)?
     var error: ((String) -> Void)?
+    
     
     var photoData: Photo?
     let photosManager = PhotosManager()
@@ -23,6 +26,7 @@ class HomeVM {
             } else if let data {
                 self.photoData = data
                 self.items.append(contentsOf: data.photos ?? [])
+//                print("Home PHOTO view-model:", self.items)
                 self.success?()
             }
         }
@@ -40,5 +44,30 @@ class HomeVM {
         photoData = nil
         items.removeAll()
         getCuratedPhotos()
+    }
+    
+    // MARK: - VIDEO
+    
+    var videoItems = [VideoElement]()
+    
+    var successVIDEO: (() -> Void)?
+    var errorVIDEO: ((String) -> Void)?
+    
+    var videoData: Video?
+    let videosManager = VideosManager()
+    
+    func getPopularVideos() {
+        videosManager.getPopularVideos(page: 1, perPage: 10) { data, errorMessage in
+            if let errorMessage {
+                self.errorVIDEO?(errorMessage)
+            } else if let data {
+                self.videoData = data
+//                print(data)
+                
+                self.videoItems.append(contentsOf: data.videos ?? [])
+//                print("Home VIDEO view-model:", self.videoItems)
+                self.successVIDEO?()
+            }
+        }
     }
 }
