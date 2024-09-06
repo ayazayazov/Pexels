@@ -25,7 +25,6 @@ class CollectionDetailVC: UIViewController {
         let cv = UICollectionView(frame: .init(), collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(CollectionDetailCell.self, forCellWithReuseIdentifier: "cell")
-//        cv.register(HomeFeedHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeFeedHeader.identifier)
         return cv
     }()
     
@@ -37,7 +36,7 @@ class CollectionDetailVC: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         print(collectionID ?? "empty")
-        configureViewModel(collectionID: collectionID ?? "")
+        configureViewModel()
         configureUI()
     }
     
@@ -47,8 +46,8 @@ class CollectionDetailVC: UIViewController {
     }
     
     private func configureUI() {
-//        refreshControl.addTarget(self, action: #selector(pullToRefresh(collectionID: collectionID ?? "")), for: .valueChanged)
-//        feed.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        feed.refreshControl = refreshControl
         
         view.addSubview(feed)
         feed.dataSource = self
@@ -61,28 +60,23 @@ class CollectionDetailVC: UIViewController {
         ])
     }
     
-    func configureViewModel(collectionID: String) {
-        viewModel.getCollectionMedia(collectionID: collectionID)
+    func configureViewModel() {
+        viewModel.getCollectionMedia(collectionID: collectionID ?? "")
         viewModel.error = { errorMessage in
             print("Error(HomeVC44): \(errorMessage)")
             //            self.showAlertController(title: "", message: errorMessage)
-//            self.refreshControl.endRefreshing()
+            self.refreshControl.endRefreshing()
         }
         viewModel.success = {
-            print(collectionID)
-//            self.refreshControl.endRefreshing()
+            self.refreshControl.endRefreshing()
             self.feed.reloadData()
         }
     }
     
-//    @objc func pullToRefresh(collectionID: String) {
-//        viewModel.reset(collectionID: collectionID)
-//    }
-    
-    
-
+    @objc func pullToRefresh() {
+        viewModel.reset(collectionID: collectionID ?? "")
+    }
 }
-
 
 extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -110,14 +104,4 @@ extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         viewModel.pagination(index: indexPath.item, collectionID: collectionID ?? "")
     }
-    
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeFeedHeader.identifier, for: indexPath) as! HomeFeedHeader
-//        header.configure()
-//        return header
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: view.frame.width, height: 88)
-//    }
 }

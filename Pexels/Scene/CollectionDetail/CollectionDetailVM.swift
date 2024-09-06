@@ -37,9 +37,9 @@ class CollectionDetailVM {
         }
     }
     
-//    func reset(collectionID: String) {
-//        collectionData = nil
-//        items.removeAll()
-//        getCollectionMedia(collectionID: collectionID)
-//    }
+    func reset(collectionID: String) {
+        collectionData = nil
+        items.removeAll()
+        getCollectionMedia(collectionID: collectionID)
+    }
 }
