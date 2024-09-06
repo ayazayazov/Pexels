@@ -6,10 +6,16 @@
 //
 
 import UIKit
+import AVFoundation
+import AVKit
 
 class HomeVC: UIViewController, UISearchBarDelegate {
     private let viewModel = HomeVM()
     
+    private var videoURL: String = ""
+    var player : AVPlayer!
+    var avpController = AVPlayerViewController()
+  
     var currentData: [Any] = []
     
     var extensionSegmentIndex = 0
@@ -51,8 +57,9 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         self.navigationController?.isNavigationBarHidden = true
         
         configureUI()
-        configureVideoViewModel()
+        
         configureViewModel()
+        configureVideoViewModel()
         
         feed.reloadData()
         
@@ -120,6 +127,8 @@ class HomeVC: UIViewController, UISearchBarDelegate {
             //            self.showAlertController(title: "", message: errorMessage)
         }
         viewModel.successVIDEO = {
+            self.videoURL = self.viewModel.videoItems[0].videoFiles?[2].link ?? ""
+            print("video link -> ", self.videoURL)
         }
     }
     
@@ -144,6 +153,16 @@ class HomeVC: UIViewController, UISearchBarDelegate {
             }
             feed.reloadData()
         }
+    
+    func startVideo() {
+        let url = URL(string: videoURL)
+        player = AVPlayer(url: url!)
+        avpController.player = player
+        player.play()
+        present(avpController, animated: true) {
+            self.avpController.player?.play()
+        }
+    }
     
 }
 
@@ -192,6 +211,8 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             let controller =  PhotoDetailVC()
             controller.photoID = viewModel.items[indexPath.item].id
             navigationController?.show(controller, sender: nil)
+        } else {
+            startVideo()
         }
         
     }
