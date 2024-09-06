@@ -18,7 +18,5 @@ enum PhotosEndpoint {
         case .photoID(let id):
             return "v1/photos/\(id ?? 123453)"
         }
-
-        
     }
 }

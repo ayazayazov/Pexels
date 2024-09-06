@@ -15,9 +15,6 @@ class HomeVC: UIViewController, UISearchBarDelegate {
     private var videoURL: String = ""
     var player : AVPlayer!
     var avpController = AVPlayerViewController()
-  
-    var currentData: [Any] = []
-    
     var extensionSegmentIndex = 0
     
     private let imageRation = ImageRationCalc()
@@ -31,7 +28,7 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         return sb
     }()
     
-    private let segment: UISegmentedControl = {
+    private var segment: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Photos", "Videos"])
         sc.selectedSegmentIndex = 0
         sc.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
@@ -46,28 +43,16 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(HomeFeedCell.self, forCellWithReuseIdentifier: "cell")
-//        cv.register(HomeFeedHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeFeedHeader.identifier)
         return cv
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        self.navigationController?.isNavigationBarHidden = true
-        
         configureUI()
-        
         configureViewModel()
         configureVideoViewModel()
-        
         feed.reloadData()
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = false
     }
 
     private func headerSetup() {
@@ -184,7 +169,6 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! HomeFeedCell
         if extensionSegmentIndex == 0 {
             cell.configure(data: viewModel.items[indexPath.item])
@@ -198,12 +182,12 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         if extensionSegmentIndex == 0 {
             let controller =  PhotoDetailVC()
             controller.photoID = viewModel.items[indexPath.item].id
+            controller.hidesBottomBarWhenPushed = true
             navigationController?.show(controller, sender: nil)
         } else {
             let videoURL = viewModel.videoItems[indexPath.item].videoFiles?[2].link ?? ""
             startVideo(videoURL: videoURL)
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -212,45 +196,5 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         } else {
             viewModel.videoPagination(index: indexPath.item)
         }
-        
     }
-
 }
-
-//extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = viewModel.items[indexPath.item].width
-//        let height = viewModel.items[indexPath.item].height
-//        return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        viewModel.items.count
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! HomeFeedCell
-//        cell.configure(data: viewModel.items[indexPath.item])
-//        return cell
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let controller =  PhotoDetailVC()
-//        controller.photoID = viewModel.items[indexPath.item].id
-//        navigationController?.show(controller, sender: nil)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        viewModel.pagination(index: indexPath.item)
-//    }
-//    
-////    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-////        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeFeedHeader.identifier, for: indexPath) as! HomeFeedHeader
-////        header.configure()
-////        return header
-////    }
-//    
-////    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-////        return CGSize(width: view.frame.width, height: 88)
-////    }
-//}

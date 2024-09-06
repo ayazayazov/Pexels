@@ -22,6 +22,4 @@ class CollectionsManager: CollectionsManagerUseCase {
         let endpoint = CollectionsEndpoint.featuredCollections(page: page, perPage: perPage)
         NetworkManager.request(model: FeaturedCollections.self, endpoint: endpoint.path, completion: completion)
     }
-    
-   
 }

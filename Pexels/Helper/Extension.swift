@@ -15,8 +15,6 @@ extension UIImageView {
     }
 }
 
-
-
 extension UIViewController {
     func showAlertController(title: String, message: String) {
     }

@@ -22,5 +22,4 @@ class PhotosManager: PhotosManagerUseCase {
         let endpoint = PhotosEndpoint.curatedPhotos(page: page, perPage: perPage)
         NetworkManager.request(model: Photo.self, endpoint: endpoint.path, completion: completion)
     }
-   
 }

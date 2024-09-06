@@ -15,7 +15,6 @@ class HomeVM {
     var success: (() -> Void)?
     var error: ((String) -> Void)?
     
-    
     var photoData: Photo?
     let photosManager = PhotosManager()
     
@@ -26,7 +25,6 @@ class HomeVM {
             } else if let data {
                 self.photoData = data
                 self.items.append(contentsOf: data.photos ?? [])
-//                print("Home PHOTO view-model:", self.items)
                 self.success?()
             }
         }
@@ -62,10 +60,7 @@ class HomeVM {
                 self.errorVIDEO?(errorMessage)
             } else if let data {
                 self.videoData = data
-//                print(data)
-                
                 self.videoItems.append(contentsOf: data.videos ?? [])
-//                print("Home VIDEO view-model:", self.videoItems)
                 self.successVIDEO?()
             }
         }
