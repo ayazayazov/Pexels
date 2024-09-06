@@ -127,8 +127,6 @@ class HomeVC: UIViewController, UISearchBarDelegate {
             //            self.showAlertController(title: "", message: errorMessage)
         }
         viewModel.successVIDEO = {
-            self.videoURL = self.viewModel.videoItems[0].videoFiles?[2].link ?? ""
-            print("video link -> ", self.videoURL)
         }
     }
     
@@ -154,7 +152,7 @@ class HomeVC: UIViewController, UISearchBarDelegate {
             feed.reloadData()
         }
     
-    func startVideo() {
+    func startVideo(videoURL: String) {
         let url = URL(string: videoURL)
         player = AVPlayer(url: url!)
         avpController.player = player
@@ -212,7 +210,9 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             controller.photoID = viewModel.items[indexPath.item].id
             navigationController?.show(controller, sender: nil)
         } else {
-            startVideo()
+            let videoURL = viewModel.videoItems[indexPath.item].videoFiles?[2].link ?? ""
+            startVideo(videoURL: videoURL)
+            print(videoURL)
         }
         
     }
