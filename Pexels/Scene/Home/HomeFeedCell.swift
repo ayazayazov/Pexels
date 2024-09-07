@@ -13,6 +13,8 @@ protocol HomeFeedCellProtocol{
 }
 
 class HomeFeedCell: UICollectionViewCell {
+    var isLiked = false
+    
     private let photographerUsername: UILabel = {
         let il = UILabel()
         il.font = .systemFont(ofSize: 16, weight: .bold)
@@ -21,7 +23,7 @@ class HomeFeedCell: UICollectionViewCell {
         return il
     }()
     
-    private let followButton: UIButton = {
+    let followButton: UIButton = {
         let ub = UIButton()
         ub.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         ub.setTitle("Follow", for: .normal)
@@ -42,7 +44,7 @@ class HomeFeedCell: UICollectionViewCell {
         return iv
     }()
     
-    private let likeButton: UIButton = {
+    let likeButton: UIButton = {
         let ub = UIButton()
         ub.setImage(UIImage(named: "like-unfilled"), for: .normal)
         ub.tintColor = .black
@@ -51,7 +53,7 @@ class HomeFeedCell: UICollectionViewCell {
         return ub
     }()
     
-    private let bookmarkButton: UIButton = {
+    let bookmarkButton: UIButton = {
         let ub = UIButton()
         ub.setImage(UIImage(named: "bookmark-unfilled"), for: .normal)
         ub.tintColor = .black
@@ -60,7 +62,7 @@ class HomeFeedCell: UICollectionViewCell {
         return ub
     }()
     
-    private let downloadButton: UIButton = {
+    let downloadButton: UIButton = {
         let ub = UIButton()
         ub.setImage(UIImage(named: "download"), for: .normal)
         ub.tintColor = .black
@@ -78,11 +80,27 @@ class HomeFeedCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if self.followButton.point(inside: convert(point, to: followButton), with: event) {
+            return self.followButton
+        }
+        if self.likeButton.point(inside: convert(point, to: likeButton), with: event) {
+            return self.likeButton
+        }
+        if self.bookmarkButton.point(inside: convert(point, to: bookmarkButton), with: event) {
+            return self.bookmarkButton
+        }
+        if self.downloadButton.point(inside: convert(point, to: downloadButton), with: event) {
+            return self.downloadButton
+        }
+        return super.hitTest(point, with: event)
+    }
+    
     func configure(data: HomeFeedCellProtocol) {
         cellImage.loadImage(url: data.imageName)
         photographerUsername.text = data.photographerName
     }
-    
+  
     private func setupView() {
         addSubview(photographerUsername)
         addSubview(followButton)

@@ -31,7 +31,6 @@ class HomeVC: UIViewController, UISearchBarDelegate {
     private var segment: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["Photos", "Videos"])
         sc.selectedSegmentIndex = 0
-        sc.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
         sc.translatesAutoresizingMaskIntoConstraints = false
         return sc
     }()
@@ -56,6 +55,7 @@ class HomeVC: UIViewController, UISearchBarDelegate {
     }
 
     private func headerSetup() {
+        segment.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
         searchBar.delegate = self
         view.addSubview(searchBar)
         view.addSubview(segment)
@@ -147,6 +147,37 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         }
     }
     
+    @objc func likeAction(sender: UIButton) {
+        if extensionSegmentIndex == 0 {
+            print("Photo \(sender.tag) Liked")
+        } else {
+            print("Video \(sender.tag) Liked")
+        }
+    }
+    
+    @objc func saveAction(sender: UIButton) {
+        if extensionSegmentIndex == 0 {
+            print("Photo \(sender.tag) Saved")
+        } else {
+            print("Video \(sender.tag) Saved")
+        }
+    }
+    
+    @objc func downloadAction(sender: UIButton) {
+        if extensionSegmentIndex == 0 {
+            print("Photo \(sender.tag) Dowloaded")
+        } else {
+            print("Video \(sender.tag) Dowloaded")
+        }
+    }
+    
+    @objc func followAction(sender: UIButton) {
+        if extensionSegmentIndex == 0 {
+            print("Photo \(sender.tag) User Followed")
+        } else {
+            print("Video \(sender.tag) User Followed")
+        }
+    }
 }
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -170,11 +201,20 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! HomeFeedCell
+        cell.likeButton.tag = indexPath.item
+        cell.bookmarkButton.tag = indexPath.item
+        cell.downloadButton.tag = indexPath.item
+        cell.followButton.tag = indexPath.item
         if extensionSegmentIndex == 0 {
             cell.configure(data: viewModel.items[indexPath.item])
+            cell.likeButton.tag = indexPath.item
         } else {
             cell.configure(data: viewModel.videoItems[indexPath.item])
         }
+        cell.likeButton.addTarget(self, action: #selector(likeAction(sender:)), for: .touchUpInside)
+        cell.bookmarkButton.addTarget(self, action: #selector(saveAction(sender:)), for: .touchUpInside)
+        cell.downloadButton.addTarget(self, action: #selector(downloadAction(sender:)), for: .touchUpInside)
+        cell.followButton.addTarget(self, action: #selector(followAction(sender:)), for: .touchUpInside)
         return cell
     }
     
