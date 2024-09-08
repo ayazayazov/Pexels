@@ -21,6 +21,7 @@
 		DB7219ED2C8C8315007DF18D /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DB7219EC2C8C8315007DF18D /* FirebaseDatabase */; };
 		DB7219EF2C8C8315007DF18D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DB7219EE2C8C8315007DF18D /* FirebaseFirestore */; };
 		DB7219F12C8C8315007DF18D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DB7219F02C8C8315007DF18D /* FirebaseStorage */; };
+		DB7219F32C8CE659007DF18D /* FavoritesFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7219F22C8CE659007DF18D /* FavoritesFeedCell.swift */; };
 		DB8219BC2C88B076002644B8 /* SearchFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8219BB2C88B076002644B8 /* SearchFeedCell.swift */; };
 		DB8219BE2C88BA7B002644B8 /* FeaturedCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8219BD2C88BA7B002644B8 /* FeaturedCollections.swift */; };
 		DB8219C12C88BC16002644B8 /* CollectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8219C02C88BC16002644B8 /* CollectionsManager.swift */; };
@@ -59,6 +60,7 @@
 		DB2288A82C89F5A50043CCFF /* VideosEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosEndpoint.swift; sourceTree = "<group>"; };
 		DB2288AA2C8A17A90043CCFF /* ImageRationCalc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRationCalc.swift; sourceTree = "<group>"; };
 		DB7219E52C8C81EE007DF18D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DB7219F22C8CE659007DF18D /* FavoritesFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesFeedCell.swift; sourceTree = "<group>"; };
 		DB8219BB2C88B076002644B8 /* SearchFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFeedCell.swift; sourceTree = "<group>"; };
 		DB8219BD2C88BA7B002644B8 /* FeaturedCollections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedCollections.swift; sourceTree = "<group>"; };
 		DB8219C02C88BC16002644B8 /* CollectionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsManager.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				DB1B5FE82C7FCBCA009D92BA /* FavoritesVC.swift */,
+				DB7219F22C8CE659007DF18D /* FavoritesFeedCell.swift */,
 			);
 			path = Favorites;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				DBFEB0D72C7F8ABD00520087 /* TabBarVC.swift in Sources */,
 				DBB63FE32C79CB920048A31D /* PhotosEndpoint.swift in Sources */,
 				DB8219BC2C88B076002644B8 /* SearchFeedCell.swift in Sources */,
+				DB7219F32C8CE659007DF18D /* FavoritesFeedCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
