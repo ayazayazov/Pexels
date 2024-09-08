@@ -7,30 +7,12 @@
 
 import UIKit
 import FirebaseFirestoreInternal
-import SwiftUI
-
-struct SavedPhotos: Codable, FavoritesFeedCellProtocol {
-    var imageName: String {
-        photoLink ?? ""
-    }
-    
-    var photographer: String {
-        photographerName ?? ""
-    }
-    
-    let photoID: Int?
-    let photoLink: String?
-    let photographerName: String?
-    let width: Int?
-    let height: Int?
-    var documentID: String?
-}
 
 class FavoritesVC: UIViewController {
     
     private let imageRation = ImageRationCalc()
     let db = Firestore.firestore()
-    var items = [SavedPhotos]()
+    private var items = [SavedPhotos]()
 
     private let feedLabel: UILabel = {
         let il = UILabel()
@@ -57,6 +39,10 @@ class FavoritesVC: UIViewController {
         getUsers()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        getUsers()
+    }
+    
     func getUsers() {
         items.removeAll()
         db.collection("users/ayazayazov00@gmail.com/savedPhotos").getDocuments { snapshot, error in
@@ -64,14 +50,12 @@ class FavoritesVC: UIViewController {
                 print("error: \(error.localizedDescription)")
             } else if let snapshot {
                 for document in snapshot.documents {
-                    print("document ->", document.documentID)
                     let dict = document.data()
                     if let jsonData = try? JSONSerialization.data(withJSONObject: dict) {
                         do {
                             var item = try JSONDecoder().decode(SavedPhotos.self, from: jsonData)
                             item.documentID = document.documentID
                             self.items.append(item)
-                            print(self.items)
                         } catch {
                             print("error: \(error.localizedDescription)")
                         }
@@ -92,7 +76,7 @@ class FavoritesVC: UIViewController {
             feedLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             feedLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
             
-            feed.topAnchor.constraint(equalTo: feedLabel.bottomAnchor, constant: 20),
+            feed.topAnchor.constraint(equalTo: feedLabel.bottomAnchor, constant: 16),
             feed.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             feed.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             feed.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
@@ -100,8 +84,9 @@ class FavoritesVC: UIViewController {
     }
     
     @objc func deleteAction(sender: UIButton) {
-        print("Post \(sender.tag) Unsaved")
-        print("Post \(sender.tag) \(items[sender.tag].documentID ?? "")")
+        db.collection("users/ayazayazov00@gmail.com/savedPhotos").document("\(items[sender.tag].documentID ?? "")").delete()
+        items.remove(at: sender.tag)
+        feed.reloadData()
     }
 }
 

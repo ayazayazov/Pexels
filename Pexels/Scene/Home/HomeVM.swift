@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestoreInternal
 
 class HomeVM {
     // MARK: - PHOTO
@@ -78,5 +79,40 @@ class HomeVM {
         videoData = nil
         videoItems.removeAll()
         getPopularVideos()
+    }
+    
+    // MARK: - Saved Photos
+    
+    var savedPhotosItems = [SavedPhotos]()
+    
+    var successSavedPhotos: (() -> Void)?
+    var errorSavedPhotos: ((String) -> Void)?
+    
+    let db = Firestore.firestore()
+//    var videoData: Video?
+//    let videosManager = VideosManager()
+    
+    func getSavedPhotos() {
+        savedPhotosItems.removeAll()
+        db.collection("users/ayazayazov00@gmail.com/savedPhotos").getDocuments { snapshot, error in
+            if let error {
+                self.errorSavedPhotos?(error.localizedDescription)
+            } else if let snapshot {
+                for document in snapshot.documents {
+                    print("document ->", document.documentID)
+                    let dict = document.data()
+                    if let jsonData = try? JSONSerialization.data(withJSONObject: dict) {
+                        do {
+                            var item = try JSONDecoder().decode(SavedPhotos.self, from: jsonData)
+                            item.documentID = document.documentID
+                            self.savedPhotosItems.append(item)
+                            self.successSavedPhotos?()
+                        } catch {
+                            self.errorSavedPhotos?(error.localizedDescription)
+                        }
+                    }
+                }
+            }
+        }
     }
 }

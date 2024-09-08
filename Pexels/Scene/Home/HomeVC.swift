@@ -8,14 +8,18 @@
 import UIKit
 import AVFoundation
 import AVKit
+import FirebaseFirestoreInternal
 
 class HomeVC: UIViewController, UISearchBarDelegate {
     private let viewModel = HomeVM()
+    private let favoritesVC = FavoritesVC()
     
     private var videoURL: String = ""
     var player : AVPlayer!
     var avpController = AVPlayerViewController()
     var extensionSegmentIndex = 0
+    private let db = Firestore.firestore()
+    private var items = [SavedPhotos]()
     
     private let imageRation = ImageRationCalc()
     private let refreshControl = UIRefreshControl()
@@ -51,6 +55,8 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         configureUI()
         configureViewModel()
         configureVideoViewModel()
+        getUsers()
+//        configureSavedPhotosViewModel()
         feed.reloadData()
     }
 
@@ -117,6 +123,17 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         }
     }
     
+    func configureSavedPhotosViewModel() {
+        viewModel.getSavedPhotos()
+        viewModel.errorSavedPhotos = { errorMessage in
+            self.showAlertController(title: "error", message: errorMessage)
+        }
+        viewModel.successSavedPhotos = {
+//            print("DIDLOAD VIEW-MODEL ITEMS>>>>>", self.viewModel.savedPhotosItems)
+//            self.items.append(contentsOf: self.viewModel.savedPhotosItems)
+        }
+    }
+    
     @objc func pullToRefresh() {
         if extensionSegmentIndex == 0 {
             viewModel.reset()
@@ -155,9 +172,49 @@ class HomeVC: UIViewController, UISearchBarDelegate {
         }
     }
     
+    func getUsers() {
+        items.removeAll()
+        db.collection("users/ayazayazov00@gmail.com/savedPhotos").getDocuments { snapshot, error in
+            if let error {
+                print("error: \(error.localizedDescription)")
+            } else if let snapshot {
+                for document in snapshot.documents {
+                    let dict = document.data()
+                    if let jsonData = try? JSONSerialization.data(withJSONObject: dict) {
+                        do {
+                            var item = try JSONDecoder().decode(SavedPhotos.self, from: jsonData)
+                            item.documentID = document.documentID
+                            self.items.append(item)
+                        } catch {
+                            print("error: \(error.localizedDescription)")
+                        }
+                    }
+                }
+//                self.feed.reloadData()
+            }
+        }
+    }
+    
     @objc func saveAction(sender: UIButton) {
         if extensionSegmentIndex == 0 {
-            print("Photo \(sender.tag) Saved")
+//            viewModel.getSavedPhotos()
+            getUsers()
+            print("items >>>>>>AAAAAAAAAAAAAAAAA",viewModel.savedPhotosItems)
+            print("clicked post id from Pexels API", viewModel.items[sender.tag].id)
+            print("clicked post id from Firestore", items)
+//            var result = viewModel.savedPhotosItems.contains{$0.photoID == viewModel.items[sender.tag].id}
+//            print("eyni sekil varmi:", result)
+//            self.showAlertController(title: "This post already in your favorites", message: "")
+        
+                print("Photo \(sender.tag) Saved")
+                let savedPhotoData = [
+                    "photoID": viewModel.items[sender.tag].id,
+                    "photoLink": "\(viewModel.items[sender.tag].src?.tiny ?? "")",
+                    "photographerName": "\(viewModel.items[sender.tag].photographerName)",
+                    "documentID": ""
+                ] as [String : Any]
+                db.collection("users/ayazayazov00@gmail.com/savedPhotos").addDocument(data: savedPhotoData)
+            
         } else {
             print("Video \(sender.tag) Saved")
         }
