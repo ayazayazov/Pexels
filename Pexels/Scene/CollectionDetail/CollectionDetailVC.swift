@@ -53,7 +53,7 @@ class CollectionDetailVC: UIViewController {
         feed.dataSource = self
         feed.delegate = self
         NSLayoutConstraint.activate([
-            feed.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            feed.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             feed.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             feed.leftAnchor.constraint(equalTo: view.leftAnchor),
             feed.rightAnchor.constraint(equalTo: view.rightAnchor)
