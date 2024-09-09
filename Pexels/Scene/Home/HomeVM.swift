@@ -81,6 +81,30 @@ class HomeVM {
         getPopularVideos()
     }
     
+    // MARK: - Search For Photos
+    
+    var searchedPhotosItems = [PhotoData]()
+    
+    var successSearchedPhotos: (() -> Void)?
+    var errorSearchedPhotos: ((String) -> Void)?
+    
+    var searchedPhotoData: Photo?
+    let searchedPhotosManager = PhotosManager()
+    
+    func getSearchForPhotos() {
+        searchedPhotosManager.getSearchForPhotos(query: "nature", page: 1, perPage: 10) { data, errorMessage in
+            if let errorMessage {
+                self.errorSearchedPhotos?(errorMessage)
+            } else if let data {
+                self.searchedPhotoData = data
+                self.searchedPhotosItems.append(contentsOf: data.photos ?? [])
+                print(self.items)
+                self.successSearchedPhotos?()
+            }
+            
+        }
+    }
+    
     // MARK: - Saved Photos
     
     var savedPhotosItems = [SavedPhotos]()
