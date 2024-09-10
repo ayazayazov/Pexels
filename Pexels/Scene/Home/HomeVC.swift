@@ -80,7 +80,7 @@ class HomeVC: UIViewController, UITextFieldDelegate {
         configureUI()
         configureViewModel()
         configureVideoViewModel()
-        configureSearchedPhotosViewModel()
+        
         //        getUsers()
         //        configureSavedPhotosViewModel()
         feed.reloadData()
@@ -162,8 +162,8 @@ class HomeVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func configureSearchedPhotosViewModel() {
-        viewModel.getSearchForPhotos()
+    func configureSearchedPhotosViewModel(query: String?) {
+        viewModel.getSearchForPhotos(query: query)
         viewModel.errorSearchedPhotos = { errorMessage in
             print("errorSearchedPhotos ->", errorMessage)
             
@@ -196,7 +196,9 @@ class HomeVC: UIViewController, UITextFieldDelegate {
         @objc func searchButtonPressed() {
             print("search btn pressed")
             if let text = searchBar.text {
+                configureSearchedPhotosViewModel(query: text)
                 print(text)
+                print(viewModel.searchedPhotosItems)
             }
         }
         

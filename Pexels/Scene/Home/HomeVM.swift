@@ -91,8 +91,8 @@ class HomeVM {
     var searchedPhotoData: Photo?
     let searchedPhotosManager = PhotosManager()
     
-    func getSearchForPhotos() {
-        searchedPhotosManager.getSearchForPhotos(query: "nature", page: 1, perPage: 10) { data, errorMessage in
+    func getSearchForPhotos(query: String?) {
+        searchedPhotosManager.getSearchForPhotos(query: query, page: 1, perPage: 10) { data, errorMessage in
             if let errorMessage {
                 self.errorSearchedPhotos?(errorMessage)
             } else if let data {
