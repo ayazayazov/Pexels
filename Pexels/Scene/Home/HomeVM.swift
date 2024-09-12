@@ -98,7 +98,7 @@ class HomeVM {
             } else if let data {
                 self.searchedPhotoData = data
                 self.searchedPhotosItems.append(contentsOf: data.photos ?? [])
-                print(self.items)
+//                print(self.searchedPhotosItems)
                 self.successSearchedPhotos?()
             }
             

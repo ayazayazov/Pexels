@@ -15,6 +15,8 @@ class HomeVC: UIViewController, UITextFieldDelegate {
     private let viewModel = HomeVM()
     private let favoritesVC = FavoritesVC()
     
+    var searchedPhotosItems = [PhotoData]()
+    
     private var videoURL: String = ""
     var player : AVPlayer!
     var avpController = AVPlayerViewController()
@@ -85,15 +87,6 @@ class HomeVC: UIViewController, UITextFieldDelegate {
         //        configureSavedPhotosViewModel()
         feed.reloadData()
     }
-    
-    //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    //        searchBar.resignFirstResponder()
-    //    }
-    //
-    //    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    //        textField.resignFirstResponder()
-    //        return true
-    //    }
     
     private func configureUI() {
         searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
@@ -169,7 +162,8 @@ class HomeVC: UIViewController, UITextFieldDelegate {
             
         }
         viewModel.successSearchedPhotos = {
-            
+//            print("172. line >>>", self.viewModel.searchedPhotosItems)
+            self.searchedPhotosItems.append(contentsOf: self.viewModel.searchedPhotosItems)
         }
             
     }
@@ -198,7 +192,9 @@ class HomeVC: UIViewController, UITextFieldDelegate {
             if let text = searchBar.text {
                 configureSearchedPhotosViewModel(query: text)
                 print(text)
-                print(viewModel.searchedPhotosItems)
+                print("204. line >>>", searchedPhotosItems)
+                let controller = SearchResultsVC()
+                navigationController?.show(controller, sender: nil)
             }
         }
         
