@@ -155,18 +155,6 @@ class HomeVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func configureSearchedPhotosViewModel(query: String?) {
-        viewModel.getSearchForPhotos(query: query)
-        viewModel.errorSearchedPhotos = { errorMessage in
-            print("errorSearchedPhotos ->", errorMessage)
-            
-        }
-        viewModel.successSearchedPhotos = {
-//            print("172. line >>>", self.viewModel.searchedPhotosItems)
-            self.searchedPhotosItems.append(contentsOf: self.viewModel.searchedPhotosItems)
-        }
-            
-    }
         
         func configureSavedPhotosViewModel() {
             viewModel.getSavedPhotos()
@@ -188,12 +176,10 @@ class HomeVC: UIViewController, UITextFieldDelegate {
         }
         
         @objc func searchButtonPressed() {
-            print("search btn pressed")
             if let text = searchBar.text {
-                configureSearchedPhotosViewModel(query: text)
-                print(text)
-                print("204. line >>>", searchedPhotosItems)
                 let controller = SearchResultsVC()
+                controller.searchBarText = text
+                controller.hidesBottomBarWhenPushed = true
                 navigationController?.show(controller, sender: nil)
             }
         }

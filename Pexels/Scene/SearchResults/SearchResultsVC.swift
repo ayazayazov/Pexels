@@ -6,14 +6,26 @@
 //
 
 import UIKit
+import AVFoundation
+import AVKit
 
-class SearchResultsVC: UIViewController {
+class SearchResultsVC: UIViewController, UITextFieldDelegate {
+    
+    private let viewModel = HomeVM()
+    
+    private let imageRation = ImageRationCalc()
+    private var videoURL: String = ""
+    var player : AVPlayer!
+    var avpController = AVPlayerViewController()
+    
+    var searchBarText: String?
+    var extensionSegmentIndex = 0
     
     private let searchBarView: UIView = {
         let iv = UIView()
         iv.backgroundColor = .systemGray6
-        iv.layer.cornerRadius = 10
-        iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+//        iv.layer.cornerRadius = 10
+//        iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -24,6 +36,17 @@ class SearchResultsVC: UIViewController {
         //        tf.isUserInteractionEnabled = true
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
+    }()
+    
+    private let backButton: UIButton = {
+        let ub = UIButton()
+        ub.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        ub.backgroundColor = .systemGray6
+        ub.tintColor = .black
+        ub.layer.cornerRadius = 10
+        ub.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        ub.translatesAutoresizingMaskIntoConstraints = false
+        return ub
     }()
     
     private let searchButton: UIButton = {
@@ -56,10 +79,143 @@ class SearchResultsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       
+        configureUI()
+        configureSearchedPhotosViewModel(query: searchBarText)
     }
     
+    private func configureUI() {
+        searchBar.text = searchBarText
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+//        searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
+//        segment.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+//        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+//        feed.refreshControl = refreshControl
+        view.addSubview(searchBarView)
+        searchBarView.addSubview(searchBar)
+        searchBar.delegate = self
+        view.addSubview(backButton)
+        view.addSubview(searchButton)
+        view.addSubview(segment)
+        view.addSubview(feed)
+        feed.dataSource = self
+        feed.delegate = self
+        NSLayoutConstraint.activate([
+            searchBarView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            searchBarView.leftAnchor.constraint(equalTo: backButton.rightAnchor),
+            searchBarView.rightAnchor.constraint(equalTo: searchButton.leftAnchor),
+            searchBarView.heightAnchor.constraint(equalToConstant: 40),
+            
+            searchBar.topAnchor.constraint(equalTo: searchBarView.topAnchor),
+            searchBar.leftAnchor.constraint(equalTo: searchBarView.leftAnchor, constant: 8),
+            searchBar.rightAnchor.constraint(equalTo: searchBarView.rightAnchor, constant: -8),
+            searchBar.heightAnchor.constraint(equalToConstant: 40),
+            
+            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            backButton.widthAnchor.constraint(equalToConstant: 40),
+            backButton.heightAnchor.constraint(equalToConstant: 40),
 
+            searchButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            searchButton.widthAnchor.constraint(equalToConstant: 40),
+            searchButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            segment.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 8),
+            segment.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+            segment.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+            segment.heightAnchor.constraint(equalToConstant: 40),
+            
+            feed.topAnchor.constraint(equalTo: segment.bottomAnchor, constant: 8),
+            feed.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            feed.leftAnchor.constraint(equalTo: view.leftAnchor),
+            feed.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ])
+    }
+    
+    func configureSearchedPhotosViewModel(query: String?) {
+        viewModel.getSearchForPhotos(query: query)
+        viewModel.errorSearchedPhotos = { errorMessage in
+            print("errorSearchedPhotos ->", errorMessage)
+            
+        }
+        viewModel.successSearchedPhotos = {
+            print("74. line >>>", self.viewModel.searchedPhotosItems)
+            self.feed.reloadData()
+        }
+            
+    }
+    
+    func startVideo(videoURL: String) {
+        let url = URL(string: videoURL)
+        player = AVPlayer(url: url!)
+        avpController.player = player
+        player.play()
+        present(avpController, animated: true) {
+            self.avpController.player?.play()
+        }
+    }
+    
+    @objc func backButtonPressed() {
+        self.navigationController?.popViewController(animated: true)
+    }
 
+}
+
+extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if extensionSegmentIndex == 0 {
+            let width = viewModel.searchedPhotosItems[indexPath.item].width
+            let height = viewModel.searchedPhotosItems[indexPath.item].height
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: 800)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if extensionSegmentIndex == 0 {
+            viewModel.searchedPhotosItems.count
+        } else {
+            viewModel.videoItems.count
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! HomeFeedCell
+        cell.likeButton.tag = indexPath.item
+        cell.bookmarkButton.tag = indexPath.item
+        cell.downloadButton.tag = indexPath.item
+        cell.followButton.tag = indexPath.item
+        if extensionSegmentIndex == 0 {
+            cell.configure(data: viewModel.searchedPhotosItems[indexPath.item])
+            cell.likeButton.tag = indexPath.item
+        } else {
+            cell.configure(data: viewModel.videoItems[indexPath.item])
+        }
+//        cell.likeButton.addTarget(self, action: #selector(likeAction(sender:)), for: .touchUpInside)
+//        cell.bookmarkButton.addTarget(self, action: #selector(saveAction(sender:)), for: .touchUpInside)
+//        cell.downloadButton.addTarget(self, action: #selector(downloadAction(sender:)), for: .touchUpInside)
+//        cell.followButton.addTarget(self, action: #selector(followAction(sender:)), for: .touchUpInside)
+        return cell
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if extensionSegmentIndex == 0 {
+//            let controller =  PhotoDetailVC()
+//            controller.photoID = viewModel.searchedPhotosItems[indexPath.item].id
+//            controller.hidesBottomBarWhenPushed = true
+//            navigationController?.show(controller, sender: nil)
+//        } else {
+//            let videoURL = viewModel.videoItems[indexPath.item].videoFiles?[2].link ?? ""
+//            startVideo(videoURL: videoURL)
+//        }
+//    }
+    
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        if extensionSegmentIndex == 0 {
+//            viewModel.pagination(index: indexPath.item)
+//        } else {
+//            viewModel.videoPagination(index: indexPath.item)
+//        }
+//    }
 }

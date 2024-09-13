@@ -129,9 +129,11 @@ class SearchVC: UIViewController, UISearchBarDelegate, UITextFieldDelegate {
     }
     
     @objc func searchButtonPressed() {
-        print("search btn pressed")
         if let text = searchBar.text {
-            print(text)
+            let controller = SearchResultsVC()
+            controller.searchBarText = text
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.show(controller, sender: nil)
         }
     }
 }
