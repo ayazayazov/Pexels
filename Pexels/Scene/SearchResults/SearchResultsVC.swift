@@ -24,8 +24,6 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
     private let searchBarView: UIView = {
         let iv = UIView()
         iv.backgroundColor = .systemGray6
-//        iv.layer.cornerRadius = 10
-//        iv.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -81,13 +79,14 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         configureUI()
         configureSearchedPhotosViewModel(query: searchBarText)
+        configureSearchedVideosViewModel(query: searchBarText)
     }
     
     private func configureUI() {
         searchBar.text = searchBarText
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
 //        searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
-//        segment.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        segment.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
 //        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
 //        feed.refreshControl = refreshControl
         view.addSubview(searchBarView)
@@ -139,10 +138,33 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
             
         }
         viewModel.successSearchedPhotos = {
-            print("74. line >>>", self.viewModel.searchedPhotosItems)
             self.feed.reloadData()
         }
             
+    }
+    
+    func configureSearchedVideosViewModel(query: String?) {
+        viewModel.getsearchForVideos(query: query)
+        viewModel.errorSearchedVideos = { errorMessage in
+            print("errorSearchedVideos ->", errorMessage)
+            
+        }
+        viewModel.successSearchedVideos = {
+            self.feed.reloadData()
+        }
+            
+    }
+    
+    @objc func segmentChanged() {
+        switch segment.selectedSegmentIndex {
+        case 0:
+            extensionSegmentIndex = 0
+        case 1:
+            extensionSegmentIndex = 1
+        default:
+            extensionSegmentIndex = 0
+        }
+        feed.reloadData()
     }
     
     func startVideo(videoURL: String) {
@@ -176,7 +198,7 @@ extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource,
         if extensionSegmentIndex == 0 {
             viewModel.searchedPhotosItems.count
         } else {
-            viewModel.videoItems.count
+            viewModel.searchedVideosItems.count
         }
     }
     
@@ -190,7 +212,7 @@ extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource,
             cell.configure(data: viewModel.searchedPhotosItems[indexPath.item])
             cell.likeButton.tag = indexPath.item
         } else {
-            cell.configure(data: viewModel.videoItems[indexPath.item])
+            cell.configure(data: viewModel.searchedVideosItems[indexPath.item])
         }
 //        cell.likeButton.addTarget(self, action: #selector(likeAction(sender:)), for: .touchUpInside)
 //        cell.bookmarkButton.addTarget(self, action: #selector(saveAction(sender:)), for: .touchUpInside)
