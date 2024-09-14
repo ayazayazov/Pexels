@@ -11,13 +11,12 @@ import AVKit
 
 class SearchResultsVC: UIViewController, UITextFieldDelegate {
     
-    private let viewModel = HomeVM()
-    
+    private let viewModel = SearchResultsVM()
     private let imageRation = ImageRationCalc()
+    private let refreshControl = UIRefreshControl()
     private var videoURL: String = ""
     var player : AVPlayer!
     var avpController = AVPlayerViewController()
-    
     var searchBarText: String?
     var extensionSegmentIndex = 0
     
@@ -31,7 +30,6 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
     private let searchBar: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Search for amazing content"
-        //        tf.isUserInteractionEnabled = true
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -93,8 +91,8 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
         segment.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
-//        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
-//        feed.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+        feed.refreshControl = refreshControl
         view.addSubview(searchBarView)
         searchBarView.addSubview(searchBar)
         searchBar.delegate = self
@@ -193,6 +191,14 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @objc func pullToRefresh() {
+        if extensionSegmentIndex == 0 {
+            viewModel.searchedPhotosReset(query: searchBarText ?? "")
+        } else {
+            viewModel.searchedVideosReset(query: searchBarText ?? "")
+        }
+    }
+    
     @objc func backButtonPressed() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -257,11 +263,11 @@ extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource,
         }
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if extensionSegmentIndex == 0 {
-//            viewModel.pagination(index: indexPath.item)
-//        } else {
-//            viewModel.videoPagination(index: indexPath.item)
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if extensionSegmentIndex == 0 {
+            viewModel.searchedPhotosPagination(index: indexPath.item, query: searchBarText ?? "")
+        } else {
+            viewModel.searchedVideosPagination(index: indexPath.item, query: searchBarText ?? "")
+        }
+    }
 }
