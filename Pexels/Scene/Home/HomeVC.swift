@@ -304,8 +304,10 @@ class HomeVC: UIViewController, UITextFieldDelegate {
             if extensionSegmentIndex == 0 {
                 cell.configure(data: viewModel.items[indexPath.item])
                 cell.likeButton.tag = indexPath.item
+                cell.playImage.isHidden = true
             } else {
                 cell.configure(data: viewModel.videoItems[indexPath.item])
+                cell.playImage.isHidden = false
             }
             cell.likeButton.addTarget(self, action: #selector(likeAction(sender:)), for: .touchUpInside)
             cell.bookmarkButton.addTarget(self, action: #selector(saveAction(sender:)), for: .touchUpInside)

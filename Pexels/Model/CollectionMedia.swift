@@ -29,7 +29,7 @@ struct CollectionMedia: Codable {
 // MARK: - Media
 struct Media: Codable, CollectionDetailCellProtocol {
     var photoImageName: String {
-        src?.large2X ?? ""
+        src?.large ?? ""
     }
     
     var videoImageName: String {

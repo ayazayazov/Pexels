@@ -16,7 +16,7 @@ protocol CollectionDetailCellProtocol{
 
 class CollectionDetailCell: UICollectionViewCell {
     
-    var mediaType: String?
+    var collectionMediaType: String?
     
     private let photographerUsername: UILabel = {
         let il = UILabel()
@@ -37,6 +37,19 @@ class CollectionDetailCell: UICollectionViewCell {
         ub.backgroundColor = .systemBackground
         ub.translatesAutoresizingMaskIntoConstraints = false
         return ub
+    }()
+    
+    private let playImage: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(systemName: "play.circle.fill")
+        iv.tintColor = .white
+        iv.layer.shadowColor = UIColor.black.cgColor
+        iv.layer.shadowRadius = 10
+        iv.layer.shadowOpacity = 1
+        iv.layer.shadowOffset = CGSizeZero;
+        iv.layer.masksToBounds = false
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
     }()
     
     private let cellImage: UIImageView = {
@@ -84,12 +97,14 @@ class CollectionDetailCell: UICollectionViewCell {
     }
     
     func configure(data: CollectionDetailCellProtocol) {
-        if mediaType == "Photo" {
+        if collectionMediaType == "Photo" {
             photographerUsername.text = data.photographerName
             cellImage.loadImage(url: data.photoImageName)
+            playImage.isHidden = true
         } else {
             photographerUsername.text = data.videographerName
             cellImage.loadImage(url: data.videoImageName)
+            playImage.isHidden = false
         }
         
     }
@@ -98,6 +113,7 @@ class CollectionDetailCell: UICollectionViewCell {
         addSubview(photographerUsername)
         addSubview(followButton)
         addSubview(cellImage)
+        addSubview(playImage)
         addSubview(likeButton)
         addSubview(bookmarkButton)
         addSubview(downloadButton)
@@ -110,6 +126,11 @@ class CollectionDetailCell: UICollectionViewCell {
             followButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
             followButton.heightAnchor.constraint(equalToConstant: 40),
             followButton.widthAnchor.constraint(equalToConstant: 80),
+            
+            playImage.topAnchor.constraint(equalTo: followButton.bottomAnchor, constant: 18),
+            playImage.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            playImage.heightAnchor.constraint(equalToConstant: 34),
+            playImage.widthAnchor.constraint(equalToConstant: 34),
             
             cellImage.topAnchor.constraint(equalTo: followButton.bottomAnchor, constant: 8),
             cellImage.leftAnchor.constraint(equalTo: leftAnchor),

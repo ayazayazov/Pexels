@@ -14,6 +14,7 @@ protocol HomeFeedCellProtocol{
 
 class HomeFeedCell: UICollectionViewCell {
     var isLiked = false
+    var homeMediaType: String?
     
     private let photographerUsername: UILabel = {
         let il = UILabel()
@@ -34,6 +35,19 @@ class HomeFeedCell: UICollectionViewCell {
         ub.backgroundColor = .systemBackground
         ub.translatesAutoresizingMaskIntoConstraints = false
         return ub
+    }()
+    
+    let playImage: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(systemName: "play.circle.fill")
+        iv.tintColor = .white
+        iv.layer.shadowColor = UIColor.black.cgColor
+        iv.layer.shadowRadius = 10
+        iv.layer.shadowOpacity = 1
+        iv.layer.shadowOffset = CGSizeZero;
+        iv.layer.masksToBounds = false
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
     }()
     
     private let cellImage: UIImageView = {
@@ -105,6 +119,7 @@ class HomeFeedCell: UICollectionViewCell {
         addSubview(photographerUsername)
         addSubview(followButton)
         addSubview(cellImage)
+        addSubview(playImage)
         addSubview(likeButton)
         addSubview(bookmarkButton)
         addSubview(downloadButton)
@@ -117,6 +132,11 @@ class HomeFeedCell: UICollectionViewCell {
             followButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
             followButton.heightAnchor.constraint(equalToConstant: 40),
             followButton.widthAnchor.constraint(equalToConstant: 80),
+            
+            playImage.topAnchor.constraint(equalTo: followButton.bottomAnchor, constant: 18),
+            playImage.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            playImage.heightAnchor.constraint(equalToConstant: 34),
+            playImage.widthAnchor.constraint(equalToConstant: 34),
             
             cellImage.topAnchor.constraint(equalTo: followButton.bottomAnchor, constant: 8),
             cellImage.leftAnchor.constraint(equalTo: leftAnchor),

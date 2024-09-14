@@ -119,7 +119,7 @@ extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionDetailCell
-        cell.mediaType = viewModel.items[indexPath.item].type
+        cell.collectionMediaType = viewModel.items[indexPath.item].type
         cell.configure(data: viewModel.items[indexPath.item])
         return cell
     }
