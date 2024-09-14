@@ -277,7 +277,13 @@ class HomeVC: UIViewController, UITextFieldDelegate {
                 let height = viewModel.items[indexPath.item].height
                 return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
             } else {
-                return CGSize(width: collectionView.frame.width, height: 800)
+                let width = viewModel.videoItems[indexPath.item].width
+                let height = viewModel.videoItems[indexPath.item].height
+                if width > height {
+                    return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * 0.525 + 96)
+                } else {
+                    return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * 1.904 + 96)
+                }
             }
         }
         

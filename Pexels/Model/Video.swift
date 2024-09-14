@@ -27,14 +27,14 @@ struct Video: Codable {
 // MARK: - VideoElement
 struct VideoElement: Codable, HomeFeedCellProtocol {
     var imageName: String {
-        videoPictures?[0].picture ?? ""
+        image ?? ""
     }
     
     var photographerName: String {
         user?.name ?? ""
     }
     
-    let id, width, height, duration: Int?
+    let id, width, height, duration: Int
     let url: String?
     let image: String?
     let user: User?

@@ -11,6 +11,7 @@ protocol CollectionDetailCellProtocol{
     var photoImageName: String { get }
     var videoImageName: String { get }
     var photographerName: String { get }
+    var videographerName: String { get }
 }
 
 class CollectionDetailCell: UICollectionViewCell {
@@ -84,11 +85,13 @@ class CollectionDetailCell: UICollectionViewCell {
     
     func configure(data: CollectionDetailCellProtocol) {
         if mediaType == "Photo" {
+            photographerUsername.text = data.photographerName
             cellImage.loadImage(url: data.photoImageName)
         } else {
+            photographerUsername.text = data.videographerName
             cellImage.loadImage(url: data.videoImageName)
         }
-        photographerUsername.text = data.photographerName
+        
     }
     
     private func setupView() {

@@ -12,7 +12,7 @@ struct CollectionMedia: Codable {
     let page, perPage: Int?
     let media: [Media]?
     let totalResults: Int?
-    let nextPage: String?
+    let nextPage, prevPage: String?
     let id: String?
 
     enum CodingKeys: String, CodingKey {
@@ -21,22 +21,27 @@ struct CollectionMedia: Codable {
         case media
         case totalResults = "total_results"
         case nextPage = "next_page"
+        case prevPage = "prev_page"
         case id
     }
 }
 
 // MARK: - Media
-struct Media: Codable, CollectionDetailCellProtocol{
+struct Media: Codable, CollectionDetailCellProtocol {
     var photoImageName: String {
         src?.large2X ?? ""
     }
     
     var videoImageName: String {
-        videoPictures?[0].picture ?? ""
+        image ?? ""
     }
 
     var photographerName: String {
         photographer ?? ""
+    }
+    
+    var videographerName: String {
+        user?.name ?? ""
     }
     
     let type: String?
@@ -50,10 +55,10 @@ struct Media: Codable, CollectionDetailCellProtocol{
     let liked: Bool?
     let alt: String?
     let duration: Int?
-//    let fullRes: NSNull
-//    let tags: NSNull
+//    let fullRes: JSONNull?
+//    let tags: [JSONAny]?
     let image: String?
-    let user: UserCollection?
+    let user: Username?
     let videoFiles: [VideoFileCollection]?
     let videoPictures: [VideoPictureCollection]?
 
@@ -64,7 +69,7 @@ struct Media: Codable, CollectionDetailCellProtocol{
         case avgColor = "avg_color"
         case src, liked, alt, duration
 //        case fullRes = "full_res"
-//        case tags, 
+//        case tags
         case image, user
         case videoFiles = "video_files"
         case videoPictures = "video_pictures"
@@ -83,13 +88,13 @@ struct MediaSrc: Codable {
     }
 }
 
-enum TypeEnum: String, Codable {
-    case photo = "Photo"
-    case video = "Video"
-}
+//enum TypeEnum: String, Codable {
+//    case photo = "Photo"
+//    case video = "Video"
+//}
 
 // MARK: - User
-struct UserCollection: Codable {
+struct Username: Codable {
     let id: Int?
     let name: String?
     let url: String?
@@ -98,8 +103,10 @@ struct UserCollection: Codable {
 // MARK: - VideoFile
 struct VideoFileCollection: Codable {
     let id: Int?
-    let quality, fileType: String?
-    let width, height, fps: Int?
+    let quality: QualityCollection?
+    let fileType: FileTypeCollection?
+    let width, height: Int?
+    let fps: Double?
     let link: String?
     let size: Int?
 
@@ -108,6 +115,16 @@ struct VideoFileCollection: Codable {
         case fileType = "file_type"
         case width, height, fps, link, size
     }
+}
+
+enum FileTypeCollection: String, Codable {
+    case videoMp4 = "video/mp4"
+}
+
+enum QualityCollection: String, Codable {
+    case hd = "hd"
+    case sd = "sd"
+    case uhd = "uhd"
 }
 
 // MARK: - VideoPicture

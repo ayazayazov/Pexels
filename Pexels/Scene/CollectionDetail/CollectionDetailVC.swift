@@ -69,7 +69,7 @@ class CollectionDetailVC: UIViewController {
     func configureViewModel() {
         viewModel.getCollectionMedia(collectionID: collectionID ?? "")
         viewModel.error = { errorMessage in
-            print("Error(HomeVC44): \(errorMessage)")
+            print("Error(CollectionDetailVC72)>>> \(errorMessage)")
             //            self.showAlertController(title: "", message: errorMessage)
             self.refreshControl.endRefreshing()
         }
@@ -103,7 +103,13 @@ extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSour
             let height = viewModel.items[indexPath.item].height
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
         } else {
-            return CGSize(width: collectionView.frame.width, height: 800)
+            let width = viewModel.items[indexPath.item].width
+            let height = viewModel.items[indexPath.item].height
+            if width > height {
+                return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * 0.525 + 96)
+            } else {
+                return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * 1.904 + 96)
+            }
         }
     }
     
@@ -123,12 +129,11 @@ extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSour
         let mediaType = viewModel.items[indexPath.item].type
         if mediaType == "Photo" {
             controller.photoID = viewModel.items[indexPath.item].id
+            navigationController?.show(controller, sender: nil)
         } else {
             let videoURL = viewModel.items[indexPath.item].videoFiles?[2].link ?? ""
             startVideo(videoURL: videoURL)
         }
-        
-        navigationController?.show(controller, sender: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
