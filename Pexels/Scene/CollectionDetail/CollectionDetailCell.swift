@@ -8,11 +8,15 @@
 import UIKit
 
 protocol CollectionDetailCellProtocol{
-    var imageName: String { get }
+    var photoImageName: String { get }
+    var videoImageName: String { get }
     var photographerName: String { get }
 }
 
 class CollectionDetailCell: UICollectionViewCell {
+    
+    var mediaType: String?
+    
     private let photographerUsername: UILabel = {
         let il = UILabel()
         il.font = .systemFont(ofSize: 16, weight: .bold)
@@ -79,7 +83,11 @@ class CollectionDetailCell: UICollectionViewCell {
     }
     
     func configure(data: CollectionDetailCellProtocol) {
-        cellImage.loadImage(url: data.imageName)
+        if mediaType == "Photo" {
+            cellImage.loadImage(url: data.photoImageName)
+        } else {
+            cellImage.loadImage(url: data.videoImageName)
+        }
         photographerUsername.text = data.photographerName
     }
     

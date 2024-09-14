@@ -6,12 +6,18 @@
 //
 
 import UIKit
+import AVFoundation
+import AVKit
 
 class CollectionDetailVC: UIViewController {
     
     private let viewModel = CollectionDetailVM()
     private let imageRation = ImageRationCalc()
     private let refreshControl = UIRefreshControl()
+    
+    private var videoURL: String = ""
+    var player : AVPlayer!
+    var avpController = AVPlayerViewController()
     
     let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
     
@@ -73,6 +79,16 @@ class CollectionDetailVC: UIViewController {
         }
     }
     
+    func startVideo(videoURL: String) {
+        let url = URL(string: videoURL)
+        player = AVPlayer(url: url!)
+        avpController.player = player
+        player.play()
+        present(avpController, animated: true) {
+            self.avpController.player?.play()
+        }
+    }
+    
     @objc func pullToRefresh() {
         viewModel.reset(collectionID: collectionID ?? "")
     }
@@ -80,9 +96,15 @@ class CollectionDetailVC: UIViewController {
 
 extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-       let width = viewModel.items[indexPath.item].width
-        let height = viewModel.items[indexPath.item].height
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
+        
+        let mediaType = viewModel.items[indexPath.item].type
+        if mediaType == "Photo" {
+            let width = viewModel.items[indexPath.item].width
+            let height = viewModel.items[indexPath.item].height
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.width * imageRation.calc(width: width, height: height)  + 96)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: 800)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -91,13 +113,21 @@ extension CollectionDetailVC: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionDetailCell
+        cell.mediaType = viewModel.items[indexPath.item].type
         cell.configure(data: viewModel.items[indexPath.item])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller =  PhotoDetailVC()
-        controller.photoID = viewModel.items[indexPath.item].id
+        let mediaType = viewModel.items[indexPath.item].type
+        if mediaType == "Photo" {
+            controller.photoID = viewModel.items[indexPath.item].id
+        } else {
+            let videoURL = viewModel.items[indexPath.item].videoFiles?[2].link ?? ""
+            startVideo(videoURL: videoURL)
+        }
+        
         navigationController?.show(controller, sender: nil)
     }
     
