@@ -68,7 +68,6 @@ class SearchVC: UIViewController, UISearchBarDelegate, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.tabBar.isTranslucent = false
     }
     
@@ -159,6 +158,7 @@ extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         let controller =  CollectionDetailVC()
         controller.collectionID = viewModel.items[indexPath.item].id
         controller.collectionTitle = viewModel.items[indexPath.item].title
+        controller.hidesBottomBarWhenPushed = true
         navigationController?.show(controller, sender: nil)
     }
     

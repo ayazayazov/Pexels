@@ -77,15 +77,21 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.isNavigationBarHidden = true
         configureUI()
         configureSearchedPhotosViewModel(query: searchBarText)
         configureSearchedVideosViewModel(query: searchBarText)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     private func configureUI() {
         searchBar.text = searchBarText
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-//        searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
+        searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
         segment.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
 //        refreshControl.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
 //        feed.refreshControl = refreshControl
@@ -155,6 +161,16 @@ class SearchResultsVC: UIViewController, UITextFieldDelegate {
             
     }
     
+    @objc func searchButtonPressed() {
+        if let text = searchBar.text {
+            feed.scrollsToTop = true
+            viewModel.searchedPhotosItems.removeAll()
+            viewModel.searchedVideosItems.removeAll()
+            configureSearchedPhotosViewModel(query: text)
+            configureSearchedVideosViewModel(query: text)
+        }
+    }
+    
     @objc func segmentChanged() {
         switch segment.selectedSegmentIndex {
         case 0:
@@ -221,17 +237,17 @@ extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource,
         return cell
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if extensionSegmentIndex == 0 {
-//            let controller =  PhotoDetailVC()
-//            controller.photoID = viewModel.searchedPhotosItems[indexPath.item].id
-//            controller.hidesBottomBarWhenPushed = true
-//            navigationController?.show(controller, sender: nil)
-//        } else {
-//            let videoURL = viewModel.videoItems[indexPath.item].videoFiles?[2].link ?? ""
-//            startVideo(videoURL: videoURL)
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if extensionSegmentIndex == 0 {
+            let controller =  PhotoDetailVC()
+            controller.photoID = viewModel.searchedPhotosItems[indexPath.item].id
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.show(controller, sender: nil)
+        } else {
+            let videoURL = viewModel.searchedVideosItems[indexPath.item].videoFiles?[2].link ?? ""
+            startVideo(videoURL: videoURL)
+        }
+    }
     
 //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        if extensionSegmentIndex == 0 {
